@@ -1,0 +1,7 @@
+﻿  ApplicationRenderer.cpp
+  Generating code
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+F:\Graphics_Abstraction\Project1\src\PhysicsCollisionTypes.h(226): warning C4172: returning address of local variable or temporary: q
+  All 2344 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Project1.vcxproj -> F:\Graphics_Abstraction\x64\Release\Graphics.exe
