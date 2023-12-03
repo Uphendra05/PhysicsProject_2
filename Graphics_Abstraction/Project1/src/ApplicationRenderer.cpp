@@ -237,7 +237,7 @@ void ApplicationRenderer::Start()
      modelData = loadModelDataFromFile("Model.txt");
      Model* TeaTable = new Model(modelData[9].path);
      TeaTable->transform.SetPosition(glm::vec3(modelData[9].position));
-     TeaTable->transform.SetRotation(glm::vec3(90,45,0));
+     TeaTable->transform.SetRotation(glm::vec3(40,0,0));
     // TeaTable->transform.SetScale(glm::vec3(modelData[9].scale));
      render.AddModelsAndShader(TeaTable, defaultShader);
 
@@ -549,6 +549,7 @@ spot6.outerCutOffAngle = 35;
 
      moveCam.AssignCam(&camera);
 
+    
 }
 
 void ApplicationRenderer::PreRender()
@@ -631,12 +632,10 @@ void ApplicationRenderer::Render()
 
          }
        
-         DrawDebugModelAABB(teaTablePhy->UpdateAABB(), glm::vec4(1, 0, 0, 1));
-
-
-
-
-
+       //  DrawDebugModelAABB(teaTablePhy->UpdateAABB(), glm::vec4(1, 0, 0, 1));
+        
+         RecursiveSplit(teaTablePhy, teaTablePhy->CalculateModelAABB(), 0, 3);
+      
 
          PostRender(); // Update Call AFTER  DRAW
 
@@ -702,12 +701,31 @@ void ApplicationRenderer::DrawDebugModelAABB( const cAABB& aabb, glm::vec4 color
         debugCube->transform.SetScale(targetExtents);
         //render.AddModelsAndShader(debugCube, defaultShader);
         debugCube->isWireFrame = true;
-        debugCube->Draw(*defaultShader);
+        debugCube->Draw(*lightShader);
 
 
 
     
 }
+
+void ApplicationRenderer::RecursiveSplit(PhysicsObject* rootObject, const cAABB& aabb, int currentIteration, int maxIteration)
+{
+
+    if (currentIteration >= maxIteration) {
+        // Maximum iterations reached, stop recursion
+        return;
+    }
+    std::pair<cAABB, cAABB> leftRightAABBs = SplitAABBAlongMaxExtent(aabb);
+    cAABB leftAABB = leftRightAABBs.first;
+    cAABB rightAABB = leftRightAABBs.second;
+    DrawDebugModelAABB(leftAABB, glm::vec4(1, 0, 0, 1));
+    DrawDebugModelAABB(rightAABB, glm::vec4(1, 0, 0, 1));
+
+   // RecursiveSplit(rootObject,leftRightAABBs.first, currentIteration + 1, maxIteration);
+  //  RecursiveSplit(rootObject,leftRightAABBs.second, currentIteration + 1, maxIteration);
+
+}
+
 
  void ApplicationRenderer::SetViewPort(GLFWwindow* window, int width, int height)
 {

@@ -78,7 +78,32 @@ struct Triangle
 
 };
 
+static int FindMaxExtentAxis(const cAABB& box)
+{
+	glm::vec3 extent = box.maxV - box.minV;
 
+	// Find the axis index with the maximum extent
+	int maxExtentAxis = (extent.x > extent.y) ? ((extent.x > extent.z) ? 0 : 2) : ((extent.y > extent.z) ? 1 : 2);
+
+	return maxExtentAxis;
+}
+
+static std::pair<cAABB, cAABB> SplitAABBAlongMaxExtent(const cAABB& original)
+{
+	int maxExtentAxis = FindMaxExtentAxis(original);
+
+	// Calculate the split point along the axis with the maximum extent
+	float splitPoint = 0.5f * (original.minV[maxExtentAxis] + original.maxV[maxExtentAxis]);
+
+	// Create two smaller AABBs along the axis with the maximum extent
+	cAABB leftSubAABB = original;
+	leftSubAABB.maxV[maxExtentAxis] = splitPoint;
+
+	cAABB rightSubAABB = original;
+	rightSubAABB.minV[maxExtentAxis] = splitPoint;
+
+	return std::make_pair(leftSubAABB, rightSubAABB);
+}
 
 static cAABB CalculateAABB(const std::vector<Vertex>& vertices)
 {

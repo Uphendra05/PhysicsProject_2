@@ -372,3 +372,9 @@ void PhysicsObject::SetMass(const float& massValue)
 	this->mass = massValue;
 	inverseMass = 1.0f / mass;
 }
+
+
+
+
+
+
