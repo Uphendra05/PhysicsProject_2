@@ -110,6 +110,11 @@ cAABB PhysicsObject::GetModelAABB()
 	return localAABB;
 }
 
+std::vector<Triangle> PhysicsObject::GetModelTriangleList()
+{
+	return listoftriangles;
+}
+
 bool PhysicsObject::checkCollision(PhysicsObject* other, std::vector<glm::vec3>& collisionPoints, std::vector<glm::vec3>& collisionNormals)
 
 {
@@ -235,13 +240,9 @@ cSphere PhysicsObject::UpdateSphere()
 
 void PhysicsObject::CalculateTriangle()
 {
-	for (std::vector<cSphere*>&sphereList : triangleSpheres)
-	{
-		for (cSphere* s: sphereList)
-		{
-			delete s;
-		}
-		sphereList.clear();
+	for (cSphere*& s : triangleSpheres)
+	{	
+		delete s;
 	}
 	
 	listoftriangles.clear();
@@ -262,19 +263,15 @@ void PhysicsObject::CalculateTriangle()
 			temp.v2 = triangle.v2;
 			temp.v3 = triangle.v3;
 			temp.normal = triangle.normal;
-
+			temp.CalculateMidpoint();
 
 			glm::vec3 sphereCenter = (temp.v1 + temp.v2 + temp.v3) / 3.0f;
 			float radius = glm::max(glm::distance(sphereCenter, temp.v1),
 				glm::max(glm::distance(sphereCenter, temp.v2), glm::distance(sphereCenter, temp.v3)));
 
-			trianglelist.push_back(temp);
-			meshSphers.push_back(new cSphere(sphereCenter, radius));
+			listoftriangles.push_back(temp);
+			triangleSpheres.push_back(new cSphere(sphereCenter, radius));
 		}
-		
-		listoftriangles.push_back(trianglelist);
-		triangleSpheres.push_back(std::move(meshSphers));
-
 
 	}
 
@@ -311,9 +308,12 @@ void PhysicsObject::Initialize(bool isKinematic, bool collision, ObjectMode mode
 		sphereShape =  cSphere(position, radius);
 	}
 
+		
 	if (physicsType == TRIANGLE)
 	{
 		CalculateTriangle();
+
+		BvhAABBTree = new BvhTree(this);
 	}
 	
 }
@@ -335,13 +335,13 @@ cAABB PhysicsObject::CalculateModelAABB()
 	{
 		cAABB temp = CalculateAABB(mesh->vertices);
 
-		minMax.minV.x =std::min(temp.minV.x, minMax.minV.x);
-		minMax.minV.y =std::min(temp.minV.y, minMax.minV.y);
-		minMax.minV.z =std::min(temp.minV.z, minMax.minV.z);
+		minMax.minV.x =glm::min(temp.minV.x, minMax.minV.x);
+		minMax.minV.y =glm::min(temp.minV.y, minMax.minV.y);
+		minMax.minV.z =glm::min(temp.minV.z, minMax.minV.z);
 					   
-		minMax.maxV.x =std::max(temp.maxV.x, minMax.maxV.x);
-		minMax.maxV.y =std::max(temp.maxV.y, minMax.maxV.y);
-		minMax.maxV.z =std::max(temp.maxV.z, minMax.maxV.z);
+		minMax.maxV.x =glm::max(temp.maxV.x, minMax.maxV.x);
+		minMax.maxV.y =glm::max(temp.maxV.y, minMax.maxV.y);
+		minMax.maxV.z =glm::max(temp.maxV.z, minMax.maxV.z);
 	}
 
 	return cAABB{ minMax.minV, minMax.maxV };

@@ -235,211 +235,19 @@ void ApplicationRenderer::Start()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
      modelData = loadModelDataFromFile("Model.txt");
-     Model* TeaTable = new Model(modelData[9].path);
+     Model* TeaTable = new Model("Models/Desk/Desk.obj");
      TeaTable->transform.SetPosition(glm::vec3(modelData[9].position));
-     TeaTable->transform.SetRotation(glm::vec3(40,0,0));
+     TeaTable->transform.SetRotation(glm::vec3(0,0,0));
     // TeaTable->transform.SetScale(glm::vec3(modelData[9].scale));
      render.AddModelsAndShader(TeaTable, defaultShader);
 
      teaTablePhy = new PhysicsObject(TeaTable);
-     teaTablePhy->physicsType = AABB;    
+     teaTablePhy->physicsType = TRIANGLE;    
      teaTablePhy->Initialize(false,false,STATIC);
      PhysicsEngine.AddPhysicsObjects(teaTablePhy);
 
-     //DrawDebugModelAABB(GetGraphicsAabb(teaTablePhy->GetModelAABB()), glm::vec4(1, 0, 0, 1));
+     DrawDebugModelAABB(teaTablePhy->GetModelAABB());
 
-
-#pragma region MODELS
-
-
-    /*modelData = loadModelDataFromFile("Model.txt");
-
-     Model* Walls = new Model(modelData[0].path);
-     Walls->transform.SetPosition(glm::vec3(modelData[0].position));
-     Walls->transform.SetRotation(glm::vec3(modelData[0].rotation));
-     Walls->transform.SetScale(glm::vec3(modelData[0].scale));
-     render.AddModelsAndShader(Walls, defaultShader);
-
-     Model* TableSofa = new Model(modelData[1].path);
-     TableSofa->transform.SetPosition(glm::vec3(modelData[1].position));
-     TableSofa->transform.SetRotation(glm::vec3(modelData[1].rotation));
-     TableSofa->transform.SetScale(glm::vec3(modelData[1].scale));
-     render.AddModelsAndShader(TableSofa, defaultShader);
-
-     Model* Sofas = new Model(modelData[2].path);
-     Sofas->transform.SetPosition(glm::vec3(modelData[2].position));
-     Sofas->transform.SetRotation(glm::vec3(modelData[2].rotation));
-     Sofas->transform.SetScale(glm::vec3(modelData[2].scale));
-     render.AddModelsAndShader(Sofas, defaultShader);
-
-     Model* Floor = new Model(modelData[3].path);
-     Floor->transform.SetPosition(glm::vec3(modelData[3].position));
-     Floor->transform.SetRotation(glm::vec3(modelData[3].rotation));
-     Floor->transform.SetScale(glm::vec3(modelData[3].scale));
-     render.AddModelsAndShader(Floor, defaultShader);
-
-     Model* Deco = new Model(modelData[4].path);
-     Deco->transform.SetPosition(glm::vec3(modelData[4].position));
-     Deco->transform.SetRotation(glm::vec3(modelData[4].rotation));
-     Deco->transform.SetScale(glm::vec3(modelData[4].scale));
-     render.AddModelsAndShader(Deco, defaultShader);
-
-     Model* Door = new Model(modelData[5].path);
-     Door->transform.SetPosition(glm::vec3(modelData[5].position));
-     Door->transform.SetRotation(glm::vec3(modelData[5].rotation));
-     Door->transform.SetScale(glm::vec3(modelData[5].scale));
-     render.AddModelsAndShader(Door, defaultShader);
-
-     Model* Deco2 = new Model(modelData[6].path);
-     Deco2->transform.SetPosition(glm::vec3(modelData[6].position));
-     Deco2->transform.SetRotation(glm::vec3(modelData[6].rotation));
-     Deco2->transform.SetScale(glm::vec3(modelData[6].scale));
-     render.AddModelsAndShader(Deco2, defaultShader);
-
-     Model* Desk = new Model(modelData[7].path);
-     Desk->transform.SetPosition(glm::vec3(modelData[7].position));
-     Desk->transform.SetRotation(glm::vec3(modelData[7].rotation));
-     Desk->transform.SetScale(glm::vec3(modelData[7].scale));
-     Desk->meshes[0]->textures[0]->LoadTexture(modelData[7].texturePath.c_str(), "diffuse");
-     render.AddModelsAndShader(Desk, defaultShader);
-
-     Model* Desk2 = new Model(modelData[8].path);
-     Desk2->transform.SetPosition(glm::vec3(modelData[8].position));
-     Desk2->transform.SetRotation(glm::vec3(modelData[8].rotation));
-     Desk2->transform.SetScale(glm::vec3(modelData[8].scale));
-     render.AddModelsAndShader(Desk2, defaultShader);
-
-     Model* TeaTable = new Model(modelData[9].path);
-     TeaTable->transform.SetPosition(glm::vec3(modelData[9].position));
-     TeaTable->transform.SetRotation(glm::vec3(modelData[9].rotation));
-     TeaTable->transform.SetScale(glm::vec3(modelData[9].scale));
-     render.AddModelsAndShader(TeaTable, defaultShader);
-
-     Model* FloorMat = new Model(modelData[10].path);
-     FloorMat->transform.SetPosition(glm::vec3(modelData[10].position));
-     FloorMat->transform.SetRotation(glm::vec3(modelData[10].rotation));
-     FloorMat->transform.SetScale(glm::vec3(modelData[10].scale));
-     render.AddModelsAndShader(FloorMat, defaultShader);
-
-     Model* Fireplace = new Model(modelData[11].path);
-     Fireplace->transform.SetPosition(glm::vec3(modelData[11].position));
-     Fireplace->transform.SetRotation(glm::vec3(modelData[11].rotation));
-     Fireplace->transform.SetScale(glm::vec3(modelData[11].scale));
-     render.AddModelsAndShader(Fireplace, defaultShader);     
-
-     Model* Photos = new Model(modelData[12].path);
-     Photos->transform.SetPosition(glm::vec3(modelData[12].position));
-     Photos->transform.SetRotation(glm::vec3(modelData[12].rotation));
-     Photos->transform.SetScale(glm::vec3(modelData[12].scale));
-     render.AddModelsAndShader(Photos, defaultShader);
-
-     Model* Music = new Model(modelData[13].path);
-     Music->transform.SetPosition(glm::vec3(modelData[13].position));
-     Music->transform.SetRotation(glm::vec3(modelData[13].rotation));
-     Music->transform.SetScale(glm::vec3(modelData[13].scale));
-     render.AddModelsAndShader(Music, defaultShader);
-
-     Model* CD = new Model(modelData[14].path);
-     CD->transform.SetPosition(glm::vec3(modelData[14].position));
-     CD->transform.SetRotation(glm::vec3(modelData[14].rotation));
-     CD->transform.SetScale(glm::vec3(modelData[14].scale));
-     render.AddModelsAndShader(CD, defaultShader);
-
-     Model* Roof = new Model();
-     Texture* starTexture = new Texture();
-     starTexture->LoadTexture(modelData[15].texturePath.c_str(), "starAlpha");
-     Roof->loadModel(modelData[15].path);
-     Roof->meshes[0]->textures.push_back(starTexture);
-     Roof->meshes[0]->SetColorAlpha(true);
-     Roof->transform.SetPosition(glm::vec3(modelData[15].position));
-     Roof->transform.SetRotation(glm::vec3(modelData[15].rotation));
-     Roof->transform.SetScale(glm::vec3(modelData[15].scale));
-     render.AddModelsAndShader(Roof, defaultShader);
-
-     Model* Symbols = new Model(modelData[16].path);
-     Symbols->transform.SetPosition(glm::vec3(modelData[16].position));
-     Symbols->transform.SetRotation(glm::vec3(modelData[16].rotation));
-     Symbols->transform.SetScale(glm::vec3(modelData[16].scale));
-     render.AddModelsAndShader(Symbols, defaultShader);
-
-     Model* WallLights = new Model();
-     Texture* starTexture1 = new Texture();
-     starTexture1->LoadTexture(modelData[17].texturePath.c_str(), "starAlpha");
-     WallLights->loadModel(modelData[17].path);
-     WallLights->meshes[0]->textures.push_back(starTexture1);
-     WallLights->meshes[0]->SetColorAlpha(true);
-     WallLights->transform.SetPosition(glm::vec3(modelData[17].position));
-     WallLights->transform.SetRotation(glm::vec3(modelData[17].rotation));
-     WallLights->transform.SetScale(glm::vec3(modelData[17].scale));
-     render.AddModelsAndShader(WallLights, defaultShader);
-
-     Model* Grass = new Model(modelData[18].path, true, modelData[18].isTrans , modelData[18].isCutoff);
-     Grass->transform.SetPosition(glm::vec3(modelData[18].position));
-     Grass->transform.SetRotation(glm::vec3(modelData[18].rotation));
-     Grass->transform.SetScale(glm::vec3(modelData[18].scale));
-     render.AddModelsAndShader(Grass, defaultShader);
-
-     Model* Window = new Model();
-     Window->alphaMask = new Texture();
-     Window->isTransparant = modelData[19].isTrans;
-     Window->isCutOut = modelData[19].isCutoff;
-     Window->alphaMask->LoadTexture(modelData[19].texturePath.c_str(), "alphaMask");
-     Window->loadModel(modelData[19].path);
-     Window->transform.SetPosition(glm::vec3(modelData[19].position));
-     Window->transform.SetRotation(glm::vec3(modelData[19].rotation));
-     Window->transform.SetScale(glm::vec3(modelData[19].scale));
-     render.AddTransparentModels(Window, defaultShader);
-
-     Model* Window2 = new Model();
-     Window2->alphaMask = new Texture();
-     Window2->isTransparant = modelData[20].isTrans;
-     Window2->isCutOut = modelData[20].isCutoff;
-     Window2->alphaMask->LoadTexture(modelData[20].texturePath.c_str(), "alphaMask");
-     Window2->loadModel(modelData[20].path);
-     Window2->transform.SetPosition(glm::vec3(modelData[20].position));
-     Window2->transform.SetRotation(glm::vec3(modelData[20].rotation));
-     Window2->transform.SetScale(glm::vec3(modelData[20].scale));
-     render.AddTransparentModels(Window2, defaultShader);
-
-     Model* scroll = new Model(modelData[21].path);
-     scroll->transform.SetPosition(glm::vec3(modelData[21].position));
-     scroll->transform.SetRotation(glm::vec3(modelData[21].rotation));
-     scroll->transform.SetScale(glm::vec3(modelData[21].scale));
-     scroll->meshes[0]->TextureScrolling(true);
-     render.AddModelsAndShader(scroll, defaultShader);
-
-     Model* plant = new Model("Models/Plant.fbm/plant.fbx");
-     plant->alphaMask = new Texture();
-     plant->meshes[0]->SetCutOff(true);
-    
-     plant->alphaMask->LoadTexture("Models/Plant.fbm/plant.fbm/Leaf_Front_1_2_Opacity.png", "alphaMask"); 
-     plant->meshes[0]->textures.push_back(plant->alphaMask);
-
-     plant->meshes[1]->textures.clear();
-     Texture* mesh2Tex = new Texture();
-     mesh2Tex->LoadTexture("Models/Plant.fbm/Plant.fbm/Sample_Bark_2.png", "diffuse");
-     plant->meshes[1]->textures.push_back(mesh2Tex);
-     plant->transform.SetPosition(glm::vec3(-2.3f, 0.8f, 0));
-     plant->transform.SetRotation(glm::vec3(-90, 0, 0));
-     render.AddModelsAndShader(plant, defaultShader);
-
-     plant2 = new Model("Models/Plant.fbm/plant.fbx");
-     plant2->alphaMask = new Texture();
-     plant2->meshes[0]->SetCutOff(false);
-
-     plant2->alphaMask->LoadTexture("Models/Plant.fbm/plant.fbm/Leaf_Front_1_2_Opacity.png", "alphaMask");
-     plant2->meshes[0]->textures.push_back(plant2->alphaMask);
-
-     plant2->meshes[1]->textures.clear();
-     Texture* mesh3Tex = new Texture();
-     mesh3Tex->LoadTexture("Models/Plant.fbm/Plant.fbm/Sample_Bark_2.png", "diffuse");
-     plant2->meshes[1]->textures.push_back(mesh3Tex);
-     plant2->transform.SetPosition(glm::vec3(-2.3f, 0.8f, 0.7));
-     plant2->transform.SetRotation(glm::vec3(-90, 0, 0));
-     render.AddModelsAndShader(plant2, defaultShader);*/
-      
-
-#pragma endregion
 
 
 #pragma region Lights
@@ -632,9 +440,9 @@ void ApplicationRenderer::Render()
 
          }
        
-       //  DrawDebugModelAABB(teaTablePhy->UpdateAABB(), glm::vec4(1, 0, 0, 1));
+    
         
-         RecursiveSplit(teaTablePhy, teaTablePhy->CalculateModelAABB(), 0, 3);
+      
       
 
          PostRender(); // Update Call AFTER  DRAW
@@ -651,6 +459,8 @@ void ApplicationRenderer::PostRender()
 
     PhysicsEngine.Update(deltaTime);
 
+
+    DrawDebugBvhNodeAABB(teaTablePhy->BvhAABBTree->root);
 }
 
 void ApplicationRenderer::Clear()
@@ -688,7 +498,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
 }
 
-void ApplicationRenderer::DrawDebugModelAABB( const cAABB& aabb, glm::vec4 color)
+void ApplicationRenderer::DrawDebugModelAABB( const cAABB& aabb)
 {
     
   
@@ -708,23 +518,32 @@ void ApplicationRenderer::DrawDebugModelAABB( const cAABB& aabb, glm::vec4 color
     
 }
 
-void ApplicationRenderer::RecursiveSplit(PhysicsObject* rootObject, const cAABB& aabb, int currentIteration, int maxIteration)
+void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
 {
-
-    if (currentIteration >= maxIteration) {
-        // Maximum iterations reached, stop recursion
+    if (node ==nullptr)
+    {
         return;
     }
-    std::pair<cAABB, cAABB> leftRightAABBs = SplitAABBAlongMaxExtent(aabb);
-    cAABB leftAABB = leftRightAABBs.first;
-    cAABB rightAABB = leftRightAABBs.second;
-    DrawDebugModelAABB(leftAABB, glm::vec4(1, 0, 0, 1));
-    DrawDebugModelAABB(rightAABB, glm::vec4(1, 0, 0, 1));
+    //if (node->nodeIndex == recusiveCount)
+    //{
+    //    DrawDebugModelAABB(node->GetModelAABB());
+    //   return;
+    //}
 
-   // RecursiveSplit(rootObject,leftRightAABBs.first, currentIteration + 1, maxIteration);
-  //  RecursiveSplit(rootObject,leftRightAABBs.second, currentIteration + 1, maxIteration);
+    if (node->trianglesIndex.size() != 0)
+    {
+        DrawDebugModelAABB(node->aabb);
+    }
+
+    if (node->leftChild == nullptr) return;
+
+    DrawDebugBvhNodeAABB(node->leftChild);
+    DrawDebugBvhNodeAABB(node->rightChild);
+
 
 }
+
+
 
 
  void ApplicationRenderer::SetViewPort(GLFWwindow* window, int width, int height)
@@ -787,6 +606,15 @@ void ApplicationRenderer::RecursiveSplit(PhysicsObject* rootObject, const cAABB&
 
              //cameraMoveToTarget = !cameraMoveToTarget;
 
+         }
+
+         if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+         {
+             recusiveCount--;
+         }
+         if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+         {
+             recusiveCount++;
          }
          
  }

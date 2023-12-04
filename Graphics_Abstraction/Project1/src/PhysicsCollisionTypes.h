@@ -34,10 +34,10 @@ struct cAABB
 	
 };
 
-static const modelAABB& GetGraphicsAabb(const cAABB& aabb)
-{
-	return { aabb.minV, aabb.maxV };
-}
+//static  modelAABB& GetGraphicsAabb(const cAABB& aabb)
+//{
+//	return modelAABB(aabb.minV,aabb.minV) ;
+//}
 
 struct cSphere
 {
@@ -67,14 +67,33 @@ struct Triangle
 		this->v2 = v2;
 		this->v3 = v3;
 		this->normal = normal;
+		CalculateMidpoint();
 	}
 
 	glm::vec3 v1;
 	glm::vec3 v2;
 	glm::vec3 v3;
 	glm::vec3 normal;
+	glm::vec3 center;
 
+	glm::vec3 CalculateMidpoint() 
+	{
+		center = (v1 + v2 + v3) / 3.0f;
+		return center;
+	}
 	
+	Triangle& operator=(const Triangle& other)
+	{
+		if (this != &other)
+		{
+			v1 = other.v1;
+			v2 = other.v2;
+			v3 = other.v3;
+			normal = other.normal;
+			center = other.center;
+		}
+		return *this;
+	}
 
 };
 
@@ -349,6 +368,61 @@ static bool SphereTriangleCollision(const cSphere& sphere, const Triangle& trian
 	// If all tests pass, there is a collision
 	return true;
 }
+static glm::vec3 ClosestPtTriangleToAABB(const cAABB& aabb, const Triangle& triangle)
+{
+	// Calculate collision point using barycentric coordinates
+	glm::vec3 aabbCenter = 0.5f * (aabb.minV + aabb.maxV);
+	glm::vec3 intersectionPoint;
+
+	glm::vec3 e1 = triangle.v2 - triangle.v1;
+	glm::vec3 e2 = triangle.v3 - triangle.v1;
+	glm::vec3 h = glm::cross(aabbCenter - triangle.v1, e2);
+	float a = glm::dot(e1, h);
+
+	float f = 1.0f / a;
+	glm::vec3 s = aabbCenter - triangle.v1;
+	float u = f * glm::dot(s, h);
+
+	glm::vec3 q = glm::cross(s, e1);
+	float v = f * glm::dot(aabbCenter - triangle.v1, q);
+
+	float t = f * glm::dot(e2, q);
+	intersectionPoint = triangle.v1 + u * e1 + v * e2;
+
+	return intersectionPoint;
+}
+static bool CollisionAABBVsTriangle(const cAABB& aabb, const Triangle& triangle, glm::vec3& collisionPoint)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		glm::vec3 axis;
+		if (i == 0) axis = glm::vec3(1.0f, 0.0f, 0.0f);
+		else if (i == 1) axis = glm::vec3(0.0f, 1.0f, 0.0f);
+		else axis = glm::vec3(0.0f, 0.0f, 1.0f);
+
+		// Project AABB and Triangle onto the axis
+		float aabbMin = glm::dot(aabb.minV, axis);
+		float aabbMax = glm::dot(aabb.maxV, axis);
+
+		float triV1 = glm::dot(triangle.v1, axis);
+		float triV2 = glm::dot(triangle.v2, axis);
+		float triV3 = glm::dot(triangle.v3, axis);
+
+		// Find the min and max values for the Triangle
+		float triMin = glm::min(triV1, glm::min(triV2, triV3));
+		float triMax = glm::max(triV1, glm::max(triV2, triV3));
+
+		// Check for separation
+		if (triMax < aabbMin || triMin > aabbMax) {
+			// Separation along this axis, no collision
+			return false;
+		}
+	}
+
+	collisionPoint = ClosestPtTriangleToAABB(aabb, triangle);
+	return true;
+}
+
 
 
 #pragma region Extra
@@ -433,8 +507,8 @@ static bool CollisionSphereVsTriangle(cSphere* sphere, const Triangle& triangle,
 
 static bool CollisionSphereVsMeshOfTriangles(cSphere sphere,
 	const glm::mat4& transformMatrix,
-	const std::vector <std::vector <Triangle>>& triangles,
-	const std::vector <std::vector <cSphere*>>& triangleSpheres,
+	const std::vector <Triangle>& triangles,
+	const std::vector <cSphere*>& triangleSpheres,
 	std::vector<glm::vec3>& collisionPoints,
 	std::vector<glm::vec3>& collisionNormals)
 {
@@ -446,15 +520,13 @@ static bool CollisionSphereVsMeshOfTriangles(cSphere sphere,
 
 	for (size_t i = 0; i < triangles.size(); i++)
 	{
-		const std::vector<Triangle>& triangleList = triangles[i];
-		const std::vector<cSphere*>& sphereList = triangleSpheres[i];
-		for (size_t j = 0; j < triangleList.size(); j++)
-		{
-			Triangle triangle = triangleList[j];
-			glm::vec4 transformedCenter = transformMatrix * glm::vec4(sphereList[j]->center, 1.0f);
+		
+		
+			Triangle triangle = triangles[i];
+			glm::vec4 transformedCenter = transformMatrix * glm::vec4(triangleSpheres[i]->center, 1.0f);
 			sphereTriangle->center = glm::vec3(transformedCenter);
 			// Transform the sphere's position using the transformMatrix
-			sphereTriangle->radius = sphereList[j]->radius * maxScale;
+			sphereTriangle->radius = triangleSpheres[i]->radius * maxScale;
 			// Transform the sphere's radius based on scaling
 
 			// Now you can check for collision between the transformed sphere and sphereTriangle
@@ -479,7 +551,7 @@ static bool CollisionSphereVsMeshOfTriangles(cSphere sphere,
 					collisionPoints.push_back(point);
 					collisionNormals.push_back(normal);
 				}
-			}
+			
 		}
 	}
 

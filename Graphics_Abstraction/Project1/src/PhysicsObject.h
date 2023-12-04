@@ -2,6 +2,7 @@
 #include "model.h"
 #include "PhysicsCollisionTypes.h"
 #include <functional>
+#include "BvhTree.h"
 
 enum PhysicsType
 {
@@ -40,11 +41,12 @@ public:
 	cSphere UpdateSphere();
 	void CalculateTriangle();
 	std::function<void(PhysicsObject*)> collisionCallback = nullptr;
-	std::vector<std::vector<Triangle>> listoftriangles;
-	std::vector < std::vector<cSphere*> > triangleSpheres;
+	std::vector<Triangle> listoftriangles;
+	 std::vector<cSphere*>  triangleSpheres;
 
 	cAABB GetModelAABB();
 	
+	std::vector<Triangle> GetModelTriangleList();
 
 	//bool checkCollision( PhysicsObject& other);
 	bool checkCollision(PhysicsObject* other, std::vector<glm::vec3>& collisionPoints, std::vector<glm::vec3>& collisionNormals);
@@ -52,9 +54,10 @@ public:
 	glm::vec3 acceleration;
 	float gravityValue=0.1f;
 	void Initialize(bool isKinematic, bool collision = false,ObjectMode mode = ObjectMode::STATIC);
+
 	cAABB aabb;
 	cSphere sphereShape;
-
+	BvhTree* BvhAABBTree;
 
 	cAABB CalculateModelAABB();
 	

@@ -16,6 +16,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{45b77f82-bb05-4ad2-b93f-c110976e11d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BVH aabb">
+      <UniqueIdentifier>{4560d9e5-d148-4397-a8cb-28d7e9b00738}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c">
@@ -107,6 +110,15 @@
     </ClCompile>
     <ClCompile Include="src\CameraMovement.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BvhNode.h">
+      <Filter>BVH aabb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BvhTree.cpp">
+      <Filter>BVH aabb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BvhNode.cpp">
+      <Filter>BVH aabb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="src\CameraMovement.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BvhTree.h">
+      <Filter>BVH aabb</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

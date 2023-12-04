@@ -54,8 +54,8 @@ public:
 
 	void ProcessInput(GLFWwindow* window);
 	
-	void DrawDebugModelAABB(const cAABB& aabb, glm::vec4 color);
-	void RecursiveSplit(PhysicsObject* rootObject, const cAABB& aabb, int currentIteration, int maxIteration);
+	void DrawDebugModelAABB(const cAABB& aabb);
+	void DrawDebugBvhNodeAABB(BvhNode* node);
 
 	int recusiveCount = 0;
 
