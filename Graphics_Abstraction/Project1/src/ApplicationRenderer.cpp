@@ -234,8 +234,9 @@ void ApplicationRenderer::Start()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+
      modelData = loadModelDataFromFile("Model.txt");
-     Model* TeaTable = new Model("Models/Desk/Desk.obj");
+     TeaTable = new Model("Models/Desk/Desk.obj");
      TeaTable->transform.SetPosition(glm::vec3(modelData[9].position));
      TeaTable->transform.SetRotation(glm::vec3(0,0,0));
     // TeaTable->transform.SetScale(glm::vec3(modelData[9].scale));
@@ -248,6 +249,7 @@ void ApplicationRenderer::Start()
 
      DrawDebugModelAABB(teaTablePhy->GetModelAABB());
 
+    
 
 
 #pragma region Lights
@@ -433,6 +435,7 @@ void ApplicationRenderer::Render()
          
          // make models that it should not write in the stencil buffer
          render.Draw();
+       
 
          if (cameraMoveToTarget)
          {
@@ -443,7 +446,7 @@ void ApplicationRenderer::Render()
     
         
       
-      
+     
 
          PostRender(); // Update Call AFTER  DRAW
 
@@ -459,7 +462,7 @@ void ApplicationRenderer::PostRender()
 
     PhysicsEngine.Update(deltaTime);
 
-
+ 
     DrawDebugBvhNodeAABB(teaTablePhy->BvhAABBTree->root);
 }
 
@@ -507,7 +510,7 @@ void ApplicationRenderer::DrawDebugModelAABB( const cAABB& aabb)
 
         Model* debugCube = new Model(*defaultBox);
         debugCube->transform.SetPosition(center);
-       // debugCube->transform.SetRotation(glm::vec3(0));
+        debugCube->transform.SetRotation(glm::vec3(0));
         debugCube->transform.SetScale(targetExtents);
         //render.AddModelsAndShader(debugCube, defaultShader);
         debugCube->isWireFrame = true;
@@ -532,7 +535,7 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
 
     if (node->trianglesIndex.size() != 0)
     {
-        DrawDebugModelAABB(node->aabb);
+        DrawDebugModelAABB(node->UpdateAABB());
     }
 
     if (node->leftChild == nullptr) return;
@@ -615,6 +618,15 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
          if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
          {
              recusiveCount++;
+         }
+         if (key == GLFW_KEY_R && action == GLFW_PRESS)
+         {
+             TeaTable->transform.position.x += 5;
+             TeaTable->transform.SetRotation(glm::vec3(
+                 TeaTable->transform.rotation.x + 30, TeaTable->transform.rotation.y, TeaTable->transform.rotation.z));
+             TeaTable->transform.scale.x += 5;
+             TeaTable->transform.scale.y += 5;
+             TeaTable->transform.scale.z += 5;
          }
          
  }

@@ -17,7 +17,10 @@ public:
 	
 	cAABB GetModelAABB();
 	void RecursiveSplit(const std::vector<Triangle>& triangleList);
+	cAABB UpdateAABB();
+
 private:
+	int maxNumOfTriangles = 3;
 	int maxtriCount = 3;
 	int AABBDepth = 8;
 	Model* model;

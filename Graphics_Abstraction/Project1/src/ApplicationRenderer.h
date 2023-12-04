@@ -66,6 +66,7 @@ private:
 	Model* plant2;
 	Model* CamPlaceholder;
 	Model* defaultBox;
+	Model* TeaTable;
 
 	GraphicsRender render;
 	CameraMovement moveCam;
