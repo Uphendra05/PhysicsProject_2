@@ -136,6 +136,16 @@ bool PhysicsObject::checkCollision(PhysicsObject* other, std::vector<glm::vec3>&
 			return CheckSphereVSAABBCollision(updatedSphere, UpdateAABB(), false, collisionPoints, collisionNormals);
 			
 		}
+		else if(other->physicsType == MESH_TRIANGLES)
+		{
+			if (other->isBvhActive)
+			{
+				return CollisionAABBVsMeshOfTriangles(UpdateAABB(), other->BvhAABBTree->root,
+					other->model->transform.GetModelMatrix(), other->GetModelTriangleList(),
+					collisionPoints, collisionNormals);
+			}
+		}
+
 		break;
 #pragma region SphereVS
 	case PhysicsType::SPHERE:
@@ -151,15 +161,21 @@ bool PhysicsObject::checkCollision(PhysicsObject* other, std::vector<glm::vec3>&
 			cSphere* OtherupdatedSphere = new cSphere(other->UpdateSphere());
 			return CheckSphereVSSphereCollision(updatedSphere, OtherupdatedSphere,collisionPoints,collisionNormals);
 		}
-		else if (other->physicsType == TRIANGLE)
+		else if (other->physicsType == MESH_TRIANGLES)
 		{
+			if (other->isBvhActive)
+			{
+				cSphere* updatedSphere = new cSphere(UpdateSphere());
+				return CollisionSphereVsMeshOfTriangles(UpdateAABB(), updatedSphere, other->BvhAABBTree->root,
+					other->model->transform.GetModelMatrix(), other->GetModelTriangleList(), collisionPoints, collisionNormals);
+			}
 
 			return CollisionSphereVsMeshOfTriangles(UpdateSphere(), other->model->transform.GetModelMatrix(),
 				other->listoftriangles, other->triangleSpheres,collisionPoints, collisionNormals);
 
 		}
 #pragma endregion
-	case PhysicsType:: TRIANGLE :
+	case PhysicsType:: MESH_TRIANGLES :
 		if (other->physicsType == SPHERE)
 		{
 			return CollisionSphereVsMeshOfTriangles(other->UpdateSphere(),model->transform.GetModelMatrix(),
@@ -309,7 +325,7 @@ void PhysicsObject::Initialize(bool isKinematic, bool collision, ObjectMode mode
 	}
 
 		
-	if (physicsType == TRIANGLE)
+	if (physicsType == MESH_TRIANGLES)
 	{
 		CalculateTriangle();
 

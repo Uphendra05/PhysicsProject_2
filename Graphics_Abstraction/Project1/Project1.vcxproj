@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\PhysicsCollisionTypes.cpp" />
     <ClCompile Include="src\BvhNode.cpp" />
     <ClCompile Include="src\BvhTree.cpp" />
     <ClCompile Include="src\BvhNode.h" />

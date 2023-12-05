@@ -228,7 +228,7 @@ void ApplicationRenderer::Start()
      spotlight5->transform.SetScale(glm::vec3(0.1f));
 
      Model* spotlight6 = new Model(*Sphere);
-     spotlight6->transform.SetPosition(glm::vec3(-1.0f, 3.0f, -2.0f));
+     spotlight6->transform.SetPosition(glm::vec3(0, 50, 0));
      spotlight6->transform.SetRotation(glm::vec3(-90, 0, 0));
      spotlight6->transform.SetScale(glm::vec3(0.1f));
 
@@ -236,20 +236,25 @@ void ApplicationRenderer::Start()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
      modelData = loadModelDataFromFile("Model.txt");
-     TeaTable = new Model("Models/Desk/Desk.obj");
-     TeaTable->transform.SetPosition(glm::vec3(modelData[9].position));
+     TeaTable = new Model("Models/Hanger/Models/Shuttle.ply");
+     TeaTable->transform.SetPosition(glm::vec3(0,-7,0));
      TeaTable->transform.SetRotation(glm::vec3(0,0,0));
     // TeaTable->transform.SetScale(glm::vec3(modelData[9].scale));
      render.AddModelsAndShader(TeaTable, defaultShader);
 
      teaTablePhy = new PhysicsObject(TeaTable);
-     teaTablePhy->physicsType = TRIANGLE;    
+     teaTablePhy->physicsType = MESH_TRIANGLES;    
      teaTablePhy->Initialize(false,false,STATIC);
      PhysicsEngine.AddPhysicsObjects(teaTablePhy);
 
      DrawDebugModelAABB(teaTablePhy->GetModelAABB());
 
     
+     PhysicsObject* spotlight6Phy = new PhysicsObject(spotlight6);
+     spotlight6Phy->physicsType = SPHERE;
+     spotlight6Phy->Initialize(false, true, DYNAMIC);
+
+     PhysicsEngine.AddPhysicsObjects(spotlight6Phy);
 
 
 #pragma region Lights

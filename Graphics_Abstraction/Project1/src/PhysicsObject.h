@@ -8,7 +8,7 @@ enum PhysicsType
 {
 	SPHERE,
 	AABB,
-	TRIANGLE,
+	MESH_TRIANGLES,
 	//MESH
 };
 
@@ -58,6 +58,7 @@ public:
 	cAABB aabb;
 	cSphere sphereShape;
 	BvhTree* BvhAABBTree;
+	bool isBvhActive = true;
 
 	cAABB CalculateModelAABB();
 	

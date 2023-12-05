@@ -10,12 +10,13 @@
 #include "Vertex.h"
 #include "Triangle.h"
 #include "GraphicsRender.h"
+#include <set>
 
 
 
 
 
-
+class BvhNode;
 
 struct cAABB
 {
@@ -565,4 +566,15 @@ static bool CollisionSphereVsMeshOfTriangles(cSphere sphere,
 	return false;
 }
 
+
+
+extern bool CollisionSphereVsMeshOfTriangles(const cAABB& sphereAabb, cSphere* sphere, BvhNode* rootNode,
+	const glm::mat4 transformMatrix, const std::vector<Triangle>& triangles,
+	std::vector<glm::vec3>& collisionPoints,
+	std::vector<glm::vec3>& collisionNormals);
+extern void CollisionAABBvsHAABB(const cAABB& sphereAabb, BvhNode* rootNode, std::set<int>& triangleIndices);
+extern bool CollisionAABBVsMeshOfTriangles(const cAABB& aabb, BvhNode* rootNode, const glm::mat4 transformMatrix,
+	const std::vector<Triangle>& triangles,
+	std::vector<glm::vec3>& collisionPoints, 
+	std::vector<glm::vec3>& collisionNormals);
 #pragma endregion

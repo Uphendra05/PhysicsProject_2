@@ -120,6 +120,9 @@
     <ClCompile Include="src\BvhNode.cpp">
       <Filter>BVH aabb</Filter>
     </ClCompile>
+    <ClCompile Include="src\PhysicsCollisionTypes.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
