@@ -21,7 +21,7 @@
 #include "mesh.h"
 #include "Shader.h"
 #include "Transform.h"
-
+#include"material.h"
 
 
 
@@ -36,7 +36,6 @@ public:
     std::string directory;
     std::string modelPath;
     Texture* alphaMask;
-    Texture* starAlpha;
 
     int offset;
     std::string id; //if needed 
@@ -48,10 +47,11 @@ public:
     Transform transform;
     bool isWireFrame;
     bool isVisible =true;
+    bool isLoadTexture;
     Model();
     Model(const Model& copyModel);
-    Model( std::string const& path, bool isTextureFlip=true, bool isTransparancy= false, bool isCutOut = false);
-    void loadModel(std::string const& path);
+    Model( std::string const& path, bool isLoadTexture =true, bool isTextureFlip=true, bool isTransparancy= false, bool isCutOut = false);
+    void loadModel(std::string const& path , bool isLoadTexture =true);
     void Draw(Shader& shader);
     
 
@@ -60,9 +60,12 @@ private:
     void processNode(aiNode* node, const aiScene* scene);   
     std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene);
     std::vector<Texture*> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
-    Texture LoadDefaultTexture(aiTextureType type, std::string typeName);
+    Texture* LoadDefaultTexture(aiTextureType type, std::string typeName);
+    Texture* LoadMaterialTexture(aiMaterial* mat, aiTextureType type, std::string typeName);
    
     bool isTextureFlipped = true;
+
+    const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
 };
 
 

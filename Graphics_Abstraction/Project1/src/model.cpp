@@ -16,14 +16,15 @@ Model::Model(const Model& copyModel)
     isVisible = copyModel.isVisible;
     isWireFrame = copyModel.isWireFrame;
     modelPath = copyModel.modelPath;
-
+    isLoadTexture = copyModel.isLoadTexture;
 }
 
-Model::Model( std::string const& path, bool isTextureFlip, bool isTransparancy, bool isCutOut)
+Model::Model( std::string const& path, bool isLoadTexture, bool isTextureFlip, bool isTransparancy, bool isCutOut)
            
 {
 
     this->modelPath = path;
+    this->isLoadTexture = isLoadTexture;
     this->isTextureFlipped = isTextureFlip;
     this->isTransparant = isTransparancy;
     this->isCutOut = isCutOut;
@@ -46,22 +47,17 @@ void Model::Draw(Shader& shader)
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
         meshes[i]->SetTransparency(isTransparant);
-       // meshes[i]->SetCutOff(isCutOut);
-        if (isWireFrame)
-        {
-            meshes[i]->meshDrawWireFrame(shader);
-        }
-        else
-        {
-            meshes[i]->meshDraw(shader);
-        }
-       
+        meshes[i]->SetCutOff(isCutOut);
+        //meshes[i]->meshDraw(shader);
+        meshes[i]->MeshDraw(&shader);
     }
 }
 
-void Model::loadModel(std::string const& path)
+void Model::loadModel(std::string const& path, bool isLoadTexture)
 {
+    this->isLoadTexture = isLoadTexture;
     this->modelPath = path;
+
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
    
@@ -70,6 +66,7 @@ void Model::loadModel(std::string const& path)
         std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
         return;
     }
+
     directory = path.substr(0, path.find_last_of('/'));
 
     processNode(scene->mRootNode, scene);
@@ -162,22 +159,52 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
             indices.push_back(face.mIndices[j]);
     }
     // process materials
-    aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-   
-    // 1. diffuse maps
-    std::vector<Texture*> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "material.diffuse");
-    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-    // 2. specular maps
-    std::vector<Texture*> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "material.specular");
-    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-    if ( alphaMask && alphaMask->id != 0 )
+    
+    aiColor4D baseColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+    Material* meshMaterial = new Material();
+
+    if (mesh->mMaterialIndex >= 0)
     {
-        textures.push_back(alphaMask);
-        std::cout << "Alpha pushed : " << alphaMask->path << std::endl;
+        if (isLoadTexture)
+        {
+            aiMaterial* m_aiMaterial = scene->mMaterials[mesh->mMaterialIndex];
+
+            meshMaterial->diffuseTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_DIFFUSE, "diffuse_Texture");
+            meshMaterial->specularTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_SPECULAR, "specular_Texture");
+            meshMaterial->alphaTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_OPACITY, "opacity_Texture");
+
+            if (meshMaterial->alphaTexture->path != alphaTextureDefaultPath)
+            {
+                meshMaterial->useMaskTexture = true;
+            }
+
+            meshMaterial->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
+        }
+        else
+        {
+            meshMaterial->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
+        }
     }
+    else
+    {
+      //  meshMaterial->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
+    }
+
+
+    //std::vector<Texture*> diffuseMaps = loadMaterialTextures(m_aiMaterial, aiTextureType_DIFFUSE, "material.diffuse");
+    //textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    //// 2. specular maps
+    //std::vector<Texture*> specularMaps = loadMaterialTextures(m_aiMaterial, aiTextureType_SPECULAR, "material.specular");
+    //textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+    //if ( alphaMask && alphaMask->id != 0 )
+    //{
+    //    textures.push_back(alphaMask);
+    //    std::cout << "Alpha pushed : " << alphaMask->path << std::endl;
+    //}
     
     // return a mesh object created from the extracted mesh data
-    return std::make_shared<Mesh>(vertices, indices, textures);
+    return std::make_shared<Mesh>(vertices, indices, meshMaterial);
  }
 
 
@@ -199,13 +226,13 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
             break;
         }
 
-        Texture* defaultTexture = new Texture(path.c_str());
+        Texture* defaultTexture = new Texture(path);
         defaultTexture->type = typeName;
 
 
 
-        std::cout << "Texture Loaded : " << defaultTexture->path << std::endl;
-       // std::cout << "Texture type : " << defaultTexture->type << std::endl;
+        std::cout << "Texture loading : " << defaultTexture->path << std::endl;
+        std::cout << "Texture type : " << defaultTexture->type << std::endl;
         textures.push_back(defaultTexture);
         textures_loaded.push_back(defaultTexture);
     }
@@ -230,7 +257,7 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
             bool skip = false;
             for (unsigned int j = 0; j < textures_loaded.size(); j++)
             {
-                if (std::strcmp(textures_loaded[j]->path, str.C_Str()) == 0)
+                if (std::strcmp(textures_loaded[j]->path.c_str(), str.C_Str()) == 0)
                 {
                     textures.push_back(textures_loaded[j]);
                     skip = true;
@@ -254,7 +281,7 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
     return textures;
 }
 
- Texture Model::LoadDefaultTexture(aiTextureType type, std::string typeName)
+ Texture* Model::LoadDefaultTexture(aiTextureType type, std::string typeName)
  {
      std::string path = "";
      switch (type)
@@ -265,13 +292,59 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
      case aiTextureType_SPECULAR:
          path = "Textures/DefaultTextures/Default_Specular.jpg";
          break;
+     case aiTextureType_OPACITY:
+         path = "Textures/DefaultTextures/Default_Opacity.png";
+         break;
+    
      }
 
-     Texture* defaultTexture = new Texture(path.c_str());
+     Texture* defaultTexture = new Texture(path);
      defaultTexture->type = typeName.c_str();
 
      std::cout << "Default Texture Loaded: " << defaultTexture->path << std::endl;
-     return *defaultTexture;
+     return defaultTexture;
+ }
+
+ Texture* Model::LoadMaterialTexture(aiMaterial* mat, aiTextureType type, std::string typeName)
+ {
+     if (mat->GetTextureCount(type) == 0)
+     {
+         return LoadDefaultTexture(type, typeName);
+     }
+
+     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+     {
+         aiString texString;
+         mat->GetTexture(type, i, &texString);
+
+         std::cout << " texutre path : " << texString.C_Str() << std::endl;
+
+         for (unsigned int i = 0; i < textures_loaded.size(); i++)
+         {
+             if (std::strcmp(textures_loaded[i]->path.data(), texString.C_Str()) == 0)
+             {
+                 return textures_loaded[i];
+             }
+         }
+
+         std::string filename = std::string(texString.C_Str());
+         filename = directory + '/' + filename;
+         std::ifstream file(filename);
+         if (file.good())
+         {
+             Texture* texture = new Texture(filename);
+
+             texture->type = typeName;
+             textures_loaded.push_back(texture);
+
+             return texture;
+         }
+         else
+         {
+             return LoadDefaultTexture(type, typeName);
+         }
+
+     }
  }
 
 

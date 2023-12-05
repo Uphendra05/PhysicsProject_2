@@ -67,7 +67,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
   
     defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader.frag");
-    lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
+    lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag", SOLID);
     StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag");
    
     SkyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");

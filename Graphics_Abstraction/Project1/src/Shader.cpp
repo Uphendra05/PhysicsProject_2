@@ -2,8 +2,9 @@
 #include <glm/glm.hpp>
 #include "Renderer.h"
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::Shader(const char* vertexPath, const char* fragmentPath, ShaderType type)
 {
+    this->shaderType = type;
     // 1. retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
     std::string fragmentCode;

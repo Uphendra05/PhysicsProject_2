@@ -10,14 +10,19 @@
 #include <iostream>
 #include <map>
 
+enum ShaderType
+{
+    OPAQUE,
+    SOLID
+};
 
 class Shader
 {
 public:
     unsigned int ID;
     
-   
-    Shader(const char* vertexPath, const char* fragmentPath);
+    ShaderType shaderType = ShaderType::OPAQUE;
+    Shader(const char* vertexPath, const char* fragmentPath, ShaderType type = ShaderType::OPAQUE);
    ~Shader();
        
      void Bind() const;

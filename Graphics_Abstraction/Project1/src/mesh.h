@@ -21,7 +21,7 @@
 #include "Textures.h"
 #include "Vertex.h"
 #include "Triangle.h"
-
+#include "material.h"
 #define MAX_BONE_INFLUENCE 4
 
 
@@ -36,16 +36,17 @@ public:
     std::vector<Vertex>       vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture*>      textures;
+    Material* meshMaterial;
     //unsigned int VAO;
     std::vector<Triangles> triangle;
 
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture*>& textures);
+    Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, Material* meshMaterial);
     void meshDraw(Shader& shader);
-    void meshDrawWireFrame(Shader& shader);
+    void MeshDraw(Shader* shader);
     void SetTransparency(const bool& isTransparent);
     void SetCutOff(const bool& isCutOut);
     void TextureScrolling(const bool& isScroll);
-    void SetColorAlpha(const bool& colorAlpha);
 
     VertexBuffer* VBO;
     IndexBufferObject* IBO;
@@ -62,6 +63,5 @@ private:
     bool isTransparancy = false;
     bool isCutOut = false;
     bool isTextureScrolling = false;
-    bool isColorAlpha = false;
 };
 #endif

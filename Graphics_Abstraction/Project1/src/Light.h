@@ -25,6 +25,7 @@ public:
     LightType lightType;
 
     Model* lightModel;
+   
     //for pointLight
     float constant;
     float linear;
@@ -50,7 +51,7 @@ public:
 
 
 private:
-
+    Material material;
 };
 
 

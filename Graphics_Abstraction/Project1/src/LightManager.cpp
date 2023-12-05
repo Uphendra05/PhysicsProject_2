@@ -245,9 +245,8 @@ void LightManager::UpdateUniformValues(GLuint shaderID)
         GLCALL(glUniform3f(lightList[index].position_UL, lightList[index].lightModel->transform.position.x ,lightList[index].lightModel->transform.position.y, lightList[index].lightModel->transform.position.z));
        
         glm::vec3 value = lightList[index].lightModel->transform.GetForward();
-        lightList[index].direction = value;
 
-     GLCALL(glUniform3f(lightList[index].direction_UL, lightList[index].direction.x, lightList[index].direction.y, lightList[index].direction.z));
+     GLCALL(glUniform3f(lightList[index].direction_UL, value.x, value.y, value.z));
 
         glUniform4f(lightList[index].diffuse_UL, lightList[index].diffuse.x,lightList[index].diffuse.y,   lightList[index].diffuse.z, lightList[index].diffuse.w);
                  
