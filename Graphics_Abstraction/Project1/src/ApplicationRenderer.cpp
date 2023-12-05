@@ -171,35 +171,14 @@ void ApplicationRenderer::Start()
     Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
 
 
-    CamPlaceholder = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
-    CamPlaceholder->transform.SetPosition(glm::vec3(-1.5f, 0.8f, 0.5));
-    CamPlaceholder->transform.SetScale(glm::vec3(0.1f));
-
     //render.AddModelsAndShader(CamPlaceholder, defaultShader);
-
-    
-   
-   // Model* Sphere = new Model();
-
-   
-
-
-     Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj", true);
-     Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
-
      defaultBox = new Model("Models/Box/DefaultCube.fbx");
 
 
      Sphere->transform.position.x += 2;
-     Pokeball->transform.position.x -= 2;
-    
-     
 
-     Pokeball2->transform.position.x -= 5;
-     Pokeball2->transform.position.y -= 0.3f;
-     Pokeball2->transform.SetScale(glm::vec3(1.2f));
-    Pokeball2->transform.position = Pokeball->transform.position;
-         Pokeball2->transform.SetScale(glm::vec3(0.5f));
+    
+
 
      Model* dir = new Model();
      Model* spotlight = new Model(*Sphere);
@@ -236,25 +215,28 @@ void ApplicationRenderer::Start()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
      modelData = loadModelDataFromFile("Model.txt");
-     TeaTable = new Model("Models/Hanger/Models/Shuttle.ply");
-     TeaTable->transform.SetPosition(glm::vec3(0,-7,0));
-     TeaTable->transform.SetRotation(glm::vec3(0,0,0));
+    // CityModel = new Model("Models/City//City.obj");
+    // CityModel->transform.SetPosition(glm::vec3(0,0,0));
+    // CityModel->transform.SetRotation(glm::vec3(0,0,0));
     // TeaTable->transform.SetScale(glm::vec3(modelData[9].scale));
-     render.AddModelsAndShader(TeaTable, defaultShader);
+   //  render.AddModelsAndShader(CityModel, defaultShader);
 
-     teaTablePhy = new PhysicsObject(TeaTable);
-     teaTablePhy->physicsType = MESH_TRIANGLES;    
-     teaTablePhy->Initialize(false,false,STATIC);
-     PhysicsEngine.AddPhysicsObjects(teaTablePhy);
+  //   cityPhysics = new PhysicsObject(CityModel);
+   //  cityPhysics->Initialize(MESH_TRIANGLES,false,STATIC);
+   //  PhysicsEngine.AddPhysicsObjects(cityPhysics);
 
-     DrawDebugModelAABB(teaTablePhy->GetModelAABB());
 
-    
-     PhysicsObject* spotlight6Phy = new PhysicsObject(spotlight6);
-     spotlight6Phy->physicsType = SPHERE;
-     spotlight6Phy->Initialize(false, true, DYNAMIC);
 
-     PhysicsEngine.AddPhysicsObjects(spotlight6Phy);
+
+
+
+   //  DrawDebugModelAABB(cityPhysics->GetModelAABB());
+
+
+     //////////////////////////////////////////////////////////
+     //////SPACE SHIP ENTITY
+     spaceshipEntity = new SpaceShip(render, defaultShader, PhysicsEngine);
+     spaceshipEntity->LoadModel();
 
 
 #pragma region Lights
@@ -268,78 +250,13 @@ directionLight.specular = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
 
 
 
-Light spot;
-spot.lightType = LightType::SPOT_LIGHT;
-spot.lightModel = spotlight;
-spot.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot.cutOffAngle = 15;
-spot.outerCutOffAngle = 35;
-
-Light spot2;
-spot2.lightType = LightType::SPOT_LIGHT;
-spot2.lightModel = spotlight2;
-spot2.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot2.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot2.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot2.cutOffAngle = 15;
-spot2.outerCutOffAngle = 35;
-
-Light spot3;
-spot3.lightType = LightType::SPOT_LIGHT;
-spot3.lightModel = spotlight3;
-spot3.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot3.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot3.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot3.cutOffAngle = 15;
-spot3.outerCutOffAngle = 35;
-
-Light spot4;
-spot4.lightType = LightType::SPOT_LIGHT;
-spot4.lightModel = spotlight4;
-spot4.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot4.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot4.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot4.cutOffAngle = 15;
-spot4.outerCutOffAngle = 35;
-
-Light spot5;
-spot5.lightType = LightType::SPOT_LIGHT;
-spot5.lightModel = spotlight5;
-spot5.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot5.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot5.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot5.cutOffAngle = 15;
-spot5.outerCutOffAngle = 35;
-
-Light spot6;
-spot6.lightType = LightType::SPOT_LIGHT;
-spot6.lightModel = spotlight6;
-spot6.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot6.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot6.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
-spot6.cutOffAngle = 15;
-spot6.outerCutOffAngle = 35;
-
-
 #pragma endregion
 
-     
 
-     //Mesh Renderer
-     //render.AddModelsAndShader(Sphere, defaultShader);
-
-    
-     
-    // render.AddModelsAndShader(Pokeball, defaultShader);
-  
-
-     
      render.selectedModel = nullptr;
 
      render.AddModelsAndShader(dir,lightShader);
-     render.AddModelsAndShader(spotlight, lightShader);
+     render.AddModelsAndShader(spotlight, defaultShader);
      render.AddModelsAndShader(spotlight2, lightShader);
      render.AddModelsAndShader(spotlight3, lightShader);
      render.AddModelsAndShader(spotlight4, lightShader);
@@ -350,12 +267,7 @@ spot6.outerCutOffAngle = 35;
 
      //LightRenderer
      lightManager.AddNewLight(directionLight);
-     lightManager.AddNewLight(spot);
-     lightManager.AddNewLight(spot2);
-     lightManager.AddNewLight(spot3);
-     lightManager.AddNewLight(spot4);
-     lightManager.AddNewLight(spot5);
-     lightManager.AddNewLight(spot6);
+
      lightManager.SetUniforms(defaultShader->ID);
    
 
@@ -468,7 +380,7 @@ void ApplicationRenderer::PostRender()
     PhysicsEngine.Update(deltaTime);
 
  
-    DrawDebugBvhNodeAABB(teaTablePhy->BvhAABBTree->root);
+   // DrawDebugBvhNodeAABB(cityPhysics->BvhAABBTree->root);
 }
 
 void ApplicationRenderer::Clear()
@@ -592,7 +504,6 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
          if (key == GLFW_KEY_C && action == GLFW_PRESS)
          {
              cameraMoveToTarget = !cameraMoveToTarget;
-             camera.SetTargetPosition(CamPlaceholder->transform.position);
 
              if (cameraMoveToTarget)
              {
@@ -602,7 +513,6 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
          if (key == GLFW_KEY_1 && action == GLFW_PRESS)
          {
              
-             camera.SetTargetPosition(CamPlaceholder->transform.position);
 
               
          }
@@ -610,7 +520,6 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
          if (key == GLFW_KEY_2 && action == GLFW_PRESS)
          {
 
-             camera.SetTargetPosition(plant2->transform.position);
 
              //cameraMoveToTarget = !cameraMoveToTarget;
 
@@ -626,12 +535,12 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
          }
          if (key == GLFW_KEY_R && action == GLFW_PRESS)
          {
-             TeaTable->transform.position.x += 5;
-             TeaTable->transform.SetRotation(glm::vec3(
-                 TeaTable->transform.rotation.x + 30, TeaTable->transform.rotation.y, TeaTable->transform.rotation.z));
-             TeaTable->transform.scale.x += 5;
-             TeaTable->transform.scale.y += 5;
-             TeaTable->transform.scale.z += 5;
+             CityModel->transform.position.x += 5;
+             CityModel->transform.SetRotation(glm::vec3(
+                 CityModel->transform.rotation.x + 30, CityModel->transform.rotation.y, CityModel->transform.rotation.z));
+             CityModel->transform.scale.x += 5;
+             CityModel->transform.scale.y += 5;
+             CityModel->transform.scale.z += 5;
          }
          
  }

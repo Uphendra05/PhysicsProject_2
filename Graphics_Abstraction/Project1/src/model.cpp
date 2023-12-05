@@ -204,8 +204,8 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
 
 
 
-        std::cout << "Texture loading : " << defaultTexture->path << std::endl;
-        std::cout << "Texture type : " << defaultTexture->type << std::endl;
+        std::cout << "Texture Loaded : " << defaultTexture->path << std::endl;
+       // std::cout << "Texture type : " << defaultTexture->type << std::endl;
         textures.push_back(defaultTexture);
         textures_loaded.push_back(defaultTexture);
     }

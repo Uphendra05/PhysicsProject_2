@@ -296,9 +296,9 @@ void PhysicsObject::CalculateTriangle()
 
  
 
-void PhysicsObject::Initialize(bool isKinematic, bool collision, ObjectMode mode)
+void PhysicsObject::Initialize(PhysicsType physicsType, bool collision, ObjectMode mode)
 {
-	this->isKinematic = isKinematic;
+	this->physicsType = physicsType;
 	this->collisionCallbool = collision;
 	this->mode = mode;
 	//if (this->isKinematic)

@@ -19,6 +19,9 @@
     <Filter Include="BVH aabb">
       <UniqueIdentifier>{4560d9e5-d148-4397-a8cb-28d7e9b00738}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SpaceShip">
+      <UniqueIdentifier>{2fc45378-e64d-4b0e-9815-745775789b9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c">
@@ -122,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="src\PhysicsCollisionTypes.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpaceShip.cpp">
+      <Filter>SpaceShip</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="src\BvhTree.h">
       <Filter>BVH aabb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SpaceShip.h">
+      <Filter>SpaceShip</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

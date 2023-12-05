@@ -53,7 +53,7 @@ public:
 	glm::vec3 velocity = glm::vec3(0);
 	glm::vec3 acceleration;
 	float gravityValue=0.1f;
-	void Initialize(bool isKinematic, bool collision = false,ObjectMode mode = ObjectMode::STATIC);
+	void Initialize(PhysicsType physicsType = PhysicsType::AABB , bool collision = false,ObjectMode mode = ObjectMode::STATIC);
 
 	cAABB aabb;
 	cSphere sphereShape;

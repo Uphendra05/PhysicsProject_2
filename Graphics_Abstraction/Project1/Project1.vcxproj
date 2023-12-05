@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\SpaceShip.cpp" />
     <ClCompile Include="src\PhysicsCollisionTypes.cpp" />
     <ClCompile Include="src\BvhNode.cpp" />
     <ClCompile Include="src\BvhTree.cpp" />
@@ -177,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\SpaceShip.h" />
     <ClInclude Include="src\BvhTree.h" />
     <ClInclude Include="src\CameraMovement.h" />
     <ClInclude Include="Extern\imGui\imconfig.h" />

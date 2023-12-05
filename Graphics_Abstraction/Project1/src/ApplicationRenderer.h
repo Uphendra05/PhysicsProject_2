@@ -16,7 +16,7 @@
 #include "LoadModelsExternal.h"
 #include "GraphicsRender.h"
 #include "CameraMovement.h"
-
+#include "SpaceShip.h"
 struct ModelData
 {
 
@@ -62,16 +62,11 @@ public:
 
 private:
 	GLFWwindow* window;
+
 	Camera camera;
-	Model* plant2;
-	Model* CamPlaceholder;
-	Model* defaultBox;
-	Model* TeaTable;
+	CameraMovement moveCam;
 
 	GraphicsRender render;
-	CameraMovement moveCam;
-	LoadModelsExternal m_loadModels;
-
 	LightManager lightManager;
 
 	Shader* defaultShader;
@@ -79,13 +74,19 @@ private:
 	Shader* StencilShader;
 	Shader* SkyboxShader;
 
-
-
 	Skybox* skybox;
 
-	PhysicsEngine PhysicsEngine;
 
-	PhysicsObject* teaTablePhy;
+	Model* defaultBox;
+	Model* CityModel;
+
+	LoadModelsExternal m_loadModels;
+
+	PhysicsEngine PhysicsEngine;
+	PhysicsObject* cityPhysics;
+
+
+	SpaceShip* spaceshipEntity;
 
 	 int windowWidth;
 	 int  WindowHeight;
