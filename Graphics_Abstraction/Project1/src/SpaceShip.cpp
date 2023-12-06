@@ -52,28 +52,30 @@ void SpaceShip::SpaceShipInputs(GLFWwindow* window, float deltaTime)
 {
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
-		Direction = glm::vec3(0, 0, 1);
+		//Direction = glm::vec3(0, 0, 1);
+		Direction = -model->transform.GetForward();
 		//camera->Position += -model->transform.GetForward() * deltaTime;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		Direction = glm::vec3(0, 0, -1);
+		//Direction = glm::vec3(0, 0, -1);
+		Direction = model->transform.GetForward();
 	}
 	else   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 	{
-		Direction = glm::vec3(-1, 0, 0);
+		Direction = model->transform.GetRight();
 	}
 	else  if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
-		Direction = glm::vec3(1, 0, 0);
+		Direction = -model->transform.GetRight();
 	}
 	else if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 	{
-		Direction = glm::vec3(0, 1, 0);
+		Direction = model->transform.GetUp();
 	}
 	else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 	{
-		Direction = glm::vec3(0, -1, 0);
+		Direction = -model->transform.GetUp();
 	}
 	else
 	{
