@@ -180,46 +180,22 @@ void ApplicationRenderer::Start()
     
 
 
-     Model* dir = new Model();
-     Model* spotlight = new Model(*Sphere);
-     spotlight->transform.SetPosition(glm::vec3(1.0f, 3.0f, 0.0f));
-     spotlight->transform.SetRotation(glm::vec3(-90, 0, 0));
-     spotlight->transform.SetScale(glm::vec3(0.1f));
+     Model* directionLightModel = new Model(*Sphere);
+     directionLightModel->transform.SetPosition(glm::vec3(1.0f, 3.0f, 0.0f));
+     directionLightModel->transform.SetRotation(glm::vec3(-60, 0, 0));
+     directionLightModel->transform.SetScale(glm::vec3(0.1f));
 
-     Model* spotlight2 = new Model(*Sphere);
-     spotlight2->transform.SetPosition(glm::vec3(-1.0f, 3.0f, 0.0f));
-     spotlight2->transform.SetRotation(glm::vec3(-90, 0, 0));
-     spotlight2->transform.SetScale(glm::vec3(0.1f));
 
-     Model* spotlight3 = new Model(*Sphere);
-     spotlight3->transform.SetPosition(glm::vec3(-1.0f, 3.0f, 2.0f));
-     spotlight3->transform.SetRotation(glm::vec3(-90, 0, 0));
-     spotlight3->transform.SetScale(glm::vec3(0.1f));
-
-     Model* spotlight4 = new Model(*Sphere);
-     spotlight4->transform.SetPosition(glm::vec3(1.0f, 3.0f, 2.0f));
-     spotlight4->transform.SetRotation(glm::vec3(-90, 0, 0));
-     spotlight4->transform.SetScale(glm::vec3(0.1f));
-
-     Model* spotlight5 = new Model(*Sphere);
-     spotlight5->transform.SetPosition(glm::vec3(1.0f, 3.0f, -2.0f));
-     spotlight5->transform.SetRotation(glm::vec3(-90, 0, 0));
-     spotlight5->transform.SetScale(glm::vec3(0.1f));
-
-     Model* spotlight6 = new Model(*Sphere);
-     spotlight6->transform.SetPosition(glm::vec3(0, 50, 0));
-     spotlight6->transform.SetRotation(glm::vec3(-90, 0, 0));
-     spotlight6->transform.SetScale(glm::vec3(0.1f));
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
      modelData = loadModelDataFromFile("Model.txt");
-    // CityModel = new Model("Models/City//City.obj");
-    // CityModel->transform.SetPosition(glm::vec3(0,0,0));
-    // CityModel->transform.SetRotation(glm::vec3(0,0,0));
-    // TeaTable->transform.SetScale(glm::vec3(modelData[9].scale));
-   //  render.AddModelsAndShader(CityModel, defaultShader);
+     CityModel = new Model("Models/City//City.obj");
+     CityModel->transform.SetPosition(glm::vec3(0,-5,0));
+     CityModel->transform.SetRotation(glm::vec3(0,0,0));
+     CityModel->transform.SetScale(glm::vec3(modelData[9].scale));
+     render.AddModelsAndShader(CityModel, defaultShader);
 
   //   cityPhysics = new PhysicsObject(CityModel);
    //  cityPhysics->Initialize(MESH_TRIANGLES,false,STATIC);
@@ -243,10 +219,14 @@ void ApplicationRenderer::Start()
 
 Light directionLight;
 directionLight.lightType = LightType::DIRECTION_LIGHT;
-directionLight.lightModel = dir;
-directionLight.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-directionLight.diffuse = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-directionLight.specular = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+directionLight.lightModel = directionLightModel;
+directionLight.ambient =  glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
+directionLight.diffuse =  glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
+directionLight.specular = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
+directionLight.intensity = 0.5f;
+
+
+
 
 
 
@@ -255,13 +235,8 @@ directionLight.specular = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
 
      render.selectedModel = nullptr;
 
-     render.AddModelsAndShader(dir,lightShader);
-     render.AddModelsAndShader(spotlight, defaultShader);
-     render.AddModelsAndShader(spotlight2, lightShader);
-     render.AddModelsAndShader(spotlight3, lightShader);
-     render.AddModelsAndShader(spotlight4, lightShader);
-     render.AddModelsAndShader(spotlight5, lightShader);
-     render.AddModelsAndShader(spotlight6, lightShader);
+     render.AddModelsAndShader(directionLightModel, lightShader);
+
 
      
 

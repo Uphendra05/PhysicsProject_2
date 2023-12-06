@@ -30,7 +30,7 @@ public:
     float constant;
     float linear;
     float quadratic;
-
+    float intensity = 0.5f;
 
     //spot Lights
     float cutOffAngle;

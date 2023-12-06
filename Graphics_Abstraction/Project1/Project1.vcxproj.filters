@@ -262,5 +262,6 @@
     <None Include="Shaders\ScrollTexture.frag" />
     <None Include="Shaders\SkyboxShader.vert" />
     <None Include="Shaders\SkyboxShader.frag" />
+    <None Include="Shaders\Light_FragmentShader2.frag" />
   </ItemGroup>
 </Project>

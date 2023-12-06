@@ -221,6 +221,7 @@
     <None Include="Shaders\color.vert" />
     <None Include="Shaders\lighting.frag" />
     <None Include="Shaders\lighting.vert" />
+    <None Include="Shaders\Light_FragmentShader2.frag" />
     <None Include="Shaders\ScrollTexture.frag" />
     <None Include="Shaders\ScrollTexture.vert" />
     <None Include="Shaders\Shader.frag" />
