@@ -379,6 +379,7 @@ void ApplicationRenderer::PostRender()
 
     PhysicsEngine.Update(deltaTime);
 
+    spaceshipEntity->Update(deltaTime);
  
    // DrawDebugBvhNodeAABB(cityPhysics->BvhAABBTree->root);
 }
@@ -414,6 +415,8 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
         camera.ProcessKeyboard(RIGHT, deltaTime * cameraSpeed);
 
     }
+
+    spaceshipEntity->SpaceShipInputs(window);
 
 
 }

@@ -41,4 +41,22 @@ void SpaceShip:: LoadModel()
 void SpaceShip::Update(float deltaTime)
 {
 
+	SpaceShipPhysics->velocity = Direction * speed;
+}
+
+void SpaceShip::SpaceShipInputs(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		Direction = glm::vec3(0, 0, 1);
+	}
+	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		Direction = glm::vec3(0, 0, -1);
+	}
+	else  
+	{
+		Direction = glm::vec3(0, 0, 0);
+	}
+
 }
