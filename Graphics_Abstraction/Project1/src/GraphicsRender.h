@@ -51,26 +51,30 @@ public:
 	void AddModelsAndShader(Model& model, Shader& Shader);
 
 	void AddTransparentModels(Model* model, Shader* Shader);
+	void SetDefaultCube(Model* cube);
 	
 	void AssignStencilShader( Shader* Shader);
+	void AssignLightShader( Shader* Shader);
 
 	void AssignCamera(Camera* cam);
-
+	void SetLightShader(Shader* shader);
 	void SortObject();
 	
 	std::vector<Model*> GetModelList();
 
-	void DrawDebugModelAABB(const modelAABB& aabb, glm::vec4 color);
+	void DrawAABB(const modelAABB& aabb);
 	
 	
 	void Draw();
 
 	Model* selectedModel;
-	
 
+	Model* defaultBox;
+	
+	
 private:
 	Shader* m_StencilShader;
-
+	Shader* lightShader;
 	void ClearData();
 
 	std::vector<Model*> m_Models;

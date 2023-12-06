@@ -35,10 +35,13 @@ struct cAABB
 	
 };
 
-//static  modelAABB& GetGraphicsAabb(const cAABB& aabb)
-//{
-//	return modelAABB(aabb.minV,aabb.minV) ;
-//}
+static  modelAABB& GetGraphicsAabb(const cAABB& aabb)
+{
+	modelAABB mAABB;
+	mAABB.min = aabb.minV;
+	mAABB.max = aabb.maxV;
+	return mAABB;
+}
 
 struct cSphere
 {
@@ -571,10 +574,17 @@ static bool CollisionSphereVsMeshOfTriangles(cSphere sphere,
 extern bool CollisionSphereVsMeshOfTriangles(const cAABB& sphereAabb, cSphere* sphere, BvhNode* rootNode,
 	const glm::mat4 transformMatrix, const std::vector<Triangle>& triangles,
 	std::vector<glm::vec3>& collisionPoints,
-	std::vector<glm::vec3>& collisionNormals);
-extern void CollisionAABBvsHAABB(const cAABB& sphereAabb, BvhNode* rootNode, std::set<int>& triangleIndices);
+	std::vector<glm::vec3>& collisionNormals,  
+	std::vector<cAABB>& collisionAABBs);
+
+
+extern void CollisionAABBvsHAABB(const cAABB& sphereAabb, BvhNode* rootNode, std::set<int>& triangleIndices, 
+	std::vector<cAABB>& collisionAabbs);
+
+
 extern bool CollisionAABBVsMeshOfTriangles(const cAABB& aabb, BvhNode* rootNode, const glm::mat4 transformMatrix,
 	const std::vector<Triangle>& triangles,
 	std::vector<glm::vec3>& collisionPoints, 
-	std::vector<glm::vec3>& collisionNormals);
+	std::vector<glm::vec3>& collisionNormals,
+	std::vector<cAABB>& collisionAABBs);
 #pragma endregion

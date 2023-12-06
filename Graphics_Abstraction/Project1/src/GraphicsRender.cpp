@@ -32,6 +32,12 @@ void GraphicsRender::AddTransparentModels(Model* model, Shader* Shader)
 
 }
 
+void GraphicsRender::SetDefaultCube(Model* cube)
+{
+	this->defaultBox = cube;
+}
+
+
 void GraphicsRender::AssignStencilShader(Shader* Shader)
 {
 	this->m_StencilShader = Shader;
@@ -39,10 +45,20 @@ void GraphicsRender::AssignStencilShader(Shader* Shader)
 
 }
 
+void GraphicsRender::AssignLightShader(Shader* Shader)
+{
+	this->lightShader = Shader;
+}
+
 void GraphicsRender::AssignCamera(Camera* cam)
 {
 
 	this->cam = cam;
+}
+
+void GraphicsRender::SetLightShader(Shader* shader)
+{
+	this->lightShader = shader;
 }
 
 void GraphicsRender::SortObject()
@@ -58,6 +74,22 @@ std::vector<Model*> GraphicsRender::GetModelList()
 
 	return m_Models;
 }
+
+void GraphicsRender::DrawAABB(const modelAABB& aabb)
+{
+	glm::vec3 targetExtents = 0.5f * (aabb.max - aabb.min);
+	glm::vec3 center = 0.5f * (aabb.min + aabb.max);
+
+	Model* debugCube = new Model(*defaultBox);
+	debugCube->transform.SetPosition(center);
+	debugCube->transform.SetRotation(glm::vec3(0));
+	debugCube->transform.SetScale(targetExtents);
+	//render.AddModelsAndShader(debugCube, defaultShader);
+	debugCube->meshes[0]->isWireFrame = true;
+	debugCube->Draw(*lightShader);
+}
+
+
 
 
 

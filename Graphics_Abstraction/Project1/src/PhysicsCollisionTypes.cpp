@@ -2,16 +2,17 @@
 #include "BvhNode.h"
 
 
-void CollisionAABBvsHAABB(const cAABB& sphereAabb, BvhNode* rootNode, std::set<int>& triangleIndices)
+void CollisionAABBvsHAABB(const cAABB& sphereAabb, BvhNode* rootNode, std::set<int>& triangleIndices,  std::vector<cAABB>& collisionAabbs)
 {
 	if (CheckCOllisionAABBvsAABB(sphereAabb, rootNode->UpdateAABB()))
 	{
+		collisionAabbs.push_back(rootNode->UpdateAABB());
 		if (rootNode->trianglesIndex.empty())
 		{
 			if (rootNode->leftChild != nullptr)
 			{
-				CollisionAABBvsHAABB(sphereAabb, rootNode->leftChild, triangleIndices);
-				CollisionAABBvsHAABB(sphereAabb, rootNode->rightChild, triangleIndices);
+				CollisionAABBvsHAABB(sphereAabb, rootNode->leftChild, triangleIndices, collisionAabbs);
+				CollisionAABBvsHAABB(sphereAabb, rootNode->rightChild, triangleIndices, collisionAabbs);
 			}
 		}
 		else
@@ -25,14 +26,14 @@ void CollisionAABBvsHAABB(const cAABB& sphereAabb, BvhNode* rootNode, std::set<i
 bool CollisionSphereVsMeshOfTriangles(const cAABB& sphereAabb, cSphere* sphere, BvhNode* rootNode,
 	const glm::mat4 transformMatrix, const std::vector<Triangle>& triangles,
 	std::vector<glm::vec3>& collisionPoints,
-	std::vector<glm::vec3>& collisionNormals)
+	std::vector<glm::vec3>& collisionNormals ,  std::vector<cAABB>& collisionAABBs)
 
 
 {
-
+	collisionAABBs.clear();
 	std::set<int> triangleIndices;
 
-	CollisionAABBvsHAABB(sphereAabb, rootNode, triangleIndices);
+	CollisionAABBvsHAABB(sphereAabb, rootNode, triangleIndices,collisionAABBs);
 
 	if (triangleIndices.empty()) return false;
 
@@ -54,7 +55,6 @@ bool CollisionSphereVsMeshOfTriangles(const cAABB& sphereAabb, cSphere* sphere, 
 		}
 	}
 
-	std::cout << "Hit true" << std::endl;
 	return true;
 
 }
@@ -65,12 +65,12 @@ bool CollisionSphereVsMeshOfTriangles(const cAABB& sphereAabb, cSphere* sphere, 
 bool CollisionAABBVsMeshOfTriangles(const cAABB& aabb, BvhNode* rootNode, const glm::mat4 transformMatrix,
 	const std::vector<Triangle>& triangles,
 	std::vector<glm::vec3>& collisionPoints, 
-	std::vector<glm::vec3>& collisionNormals)
+	std::vector<glm::vec3>& collisionNormals, std::vector<cAABB>& collisionAabbs)
 {
-
+	collisionAabbs.clear();
 	std::set<int> triangleIndices;
 
-	CollisionAABBvsHAABB(aabb, rootNode, triangleIndices);
+	CollisionAABBvsHAABB(aabb, rootNode, triangleIndices,collisionAabbs);
 
 	if (triangleIndices.empty()) return false;
 

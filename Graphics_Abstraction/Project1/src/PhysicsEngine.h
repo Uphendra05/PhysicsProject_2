@@ -22,6 +22,7 @@ public:
 	void UpdatePhysics(float deltatime);
 	std::vector<PhysicsObject*> physicsObjects;
 	std::vector<glm::vec3> collisionPoints;
+	std::vector<glm::vec3> collisionNormals;
 
 
 

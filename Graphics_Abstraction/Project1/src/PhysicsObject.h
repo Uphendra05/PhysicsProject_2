@@ -43,10 +43,12 @@ public:
 	std::function<void(PhysicsObject*)> collisionCallback = nullptr;
 	std::vector<Triangle> listoftriangles;
 	 std::vector<cSphere*>  triangleSpheres;
+	 std::vector<cAABB>  collisionAABBs;
 
 	cAABB GetModelAABB();
 	
 	std::vector<Triangle> GetModelTriangleList();
+	const std::vector<cAABB>& GetCollisionAABBs();
 
 	//bool checkCollision( PhysicsObject& other);
 	bool checkCollision(PhysicsObject* other, std::vector<glm::vec3>& collisionPoints, std::vector<glm::vec3>& collisionNormals);

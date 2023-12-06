@@ -115,6 +115,11 @@ std::vector<Triangle> PhysicsObject::GetModelTriangleList()
 	return listoftriangles;
 }
 
+const std::vector<cAABB>& PhysicsObject::GetCollisionAABBs()
+{
+	return collisionAABBs;
+}
+
 bool PhysicsObject::checkCollision(PhysicsObject* other, std::vector<glm::vec3>& collisionPoints, std::vector<glm::vec3>& collisionNormals)
 
 {
@@ -142,7 +147,7 @@ bool PhysicsObject::checkCollision(PhysicsObject* other, std::vector<glm::vec3>&
 			{
 				return CollisionAABBVsMeshOfTriangles(UpdateAABB(), other->BvhAABBTree->root,
 					other->model->transform.GetModelMatrix(), other->GetModelTriangleList(),
-					collisionPoints, collisionNormals);
+					collisionPoints, collisionNormals, collisionAABBs);
 			}
 		}
 
@@ -167,7 +172,7 @@ bool PhysicsObject::checkCollision(PhysicsObject* other, std::vector<glm::vec3>&
 			{
 				cSphere* updatedSphere = new cSphere(UpdateSphere());
 				return CollisionSphereVsMeshOfTriangles(UpdateAABB(), updatedSphere, other->BvhAABBTree->root,
-					other->model->transform.GetModelMatrix(), other->GetModelTriangleList(), collisionPoints, collisionNormals);
+					other->model->transform.GetModelMatrix(), other->GetModelTriangleList(), collisionPoints, collisionNormals, collisionAABBs);
 			}
 
 			return CollisionSphereVsMeshOfTriangles(UpdateSphere(), other->model->transform.GetModelMatrix(),

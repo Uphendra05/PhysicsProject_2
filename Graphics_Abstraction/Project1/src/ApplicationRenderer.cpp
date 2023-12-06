@@ -168,13 +168,15 @@ void ApplicationRenderer::Start()
 
     render.AssignCamera(&camera);
 
+    defaultBox = new Model("Models/Box/DefaultCube.fbx");
+    render.SetDefaultCube(defaultBox);
+
+    render.SetLightShader(lightShader);
+
     Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
 
 
     //render.AddModelsAndShader(CamPlaceholder, defaultShader);
-     defaultBox = new Model("Models/Box/DefaultCube.fbx");
-
-
      Sphere->transform.position.x += 2;
 
     
@@ -191,15 +193,15 @@ void ApplicationRenderer::Start()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
      modelData = loadModelDataFromFile("Model.txt");
-     CityModel = new Model("Models/City//City.obj");
-     CityModel->transform.SetPosition(glm::vec3(0,-5,0));
+     CityModel = new Model("Models/White//White.obj");
+     CityModel->transform.SetPosition(glm::vec3(0,-15,0));
      CityModel->transform.SetRotation(glm::vec3(0,0,0));
-     CityModel->transform.SetScale(glm::vec3(modelData[9].scale));
+     CityModel->transform.SetScale(glm::vec3(0.1f));
      render.AddModelsAndShader(CityModel, defaultShader);
 
-  //   cityPhysics = new PhysicsObject(CityModel);
-   //  cityPhysics->Initialize(MESH_TRIANGLES,false,STATIC);
-   //  PhysicsEngine.AddPhysicsObjects(cityPhysics);
+     cityPhysics = new PhysicsObject(CityModel);
+     cityPhysics->Initialize(MESH_TRIANGLES,false,STATIC);
+     PhysicsEngine.AddPhysicsObjects(cityPhysics);
 
 
 
@@ -291,7 +293,7 @@ void ApplicationRenderer::Render()
         SkyboxShader->setMat4("view", _skyboxview);
         SkyboxShader->setMat4("projection", _projection);
 
-        skybox->Skyboxrender();
+       // skybox->Skyboxrender();
         glDepthFunc(GL_LESS); 
 
 
@@ -356,7 +358,7 @@ void ApplicationRenderer::PostRender()
 
     spaceshipEntity->Update(deltaTime);
  
-    DrawDebugModelAABB(spaceshipEntity->SpaceShipPhysics->UpdateAABB());
+  //  DrawDebugModelAABB(spaceshipEntity->SpaceShipPhysics->UpdateAABB());
 }
 
 void ApplicationRenderer::Clear()

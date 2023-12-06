@@ -16,7 +16,7 @@ public:
 	void LoadModel();
 
 	void Update(float deltaTime);
-	void UpdateCamera();
+	void DrawAABBCollision(PhysicsObject* physicsObject);
 	void SpaceShipInputs(GLFWwindow* window, float deltaTime);
 
 private:
@@ -27,6 +27,6 @@ private:
 
 	glm::vec3 Direction = glm::vec3(0, 0, 0);
 	glm::vec3 cameraOffset = glm::vec3(0, -2, 3.5f);
-	float speed = 20;
+	float speed = 5;
 };
 

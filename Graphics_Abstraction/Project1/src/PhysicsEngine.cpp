@@ -75,7 +75,7 @@ void PhysicsEngine::UpdatePhysics(float deltatime)
             continue;
         }
         collisionPoints.clear();
-        std::vector<glm::vec3> normals;
+        collisionNormals.clear();
 
         glm::vec3 gravity(0.0f, -9.81f * physicsObjects[i]->gravityValue, 0.0f);
         glm::vec3 deltaAcceleration = gravity * deltatime * physicsObjects[i]->inverseMass;
@@ -100,7 +100,7 @@ void PhysicsEngine::UpdatePhysics(float deltatime)
                 if (physicsObjects[i]->checkCollision(physicsObjects[j], perObjectCollisions, perObjectNormals))
                 {
                     collisionPoints.insert(collisionPoints.end(), perObjectCollisions.begin(), perObjectCollisions.end());
-                    normals.insert(normals.end(), perObjectNormals.begin(), perObjectNormals.end());
+                    collisionNormals.insert(collisionNormals.end(), perObjectNormals.begin(), perObjectNormals.end());
                     if (collisionPoints.size() > 0)
                     {
                         if (physicsObjects[i]->collisionCallbool)
@@ -115,15 +115,15 @@ void PhysicsEngine::UpdatePhysics(float deltatime)
             }
         }
 
-        if (!normals.empty())
+        if (!collisionNormals.empty())
         {
             glm::vec3 normal = glm::vec3(0.0f);
-            for (size_t k = 0; k < normals.size(); k++)
+            for (size_t k = 0; k < collisionNormals.size(); k++)
             {
-                normal += glm::normalize(normals[k]);
+                normal += glm::normalize(collisionNormals[k]);
             }
 
-            normal = normal / static_cast<float>(normals.size());
+            normal = normal / static_cast<float>(collisionNormals.size());
 
             glm::vec3 incident = physicsObjects[i]->velocity;
             float dotProduct = glm::dot(incident, normal);
