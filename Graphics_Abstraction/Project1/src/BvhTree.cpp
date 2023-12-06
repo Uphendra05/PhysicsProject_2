@@ -1,7 +1,6 @@
 #include "BvhTree.h"
 #include "PhysicsObject.h"
-#include <limits>
-#include <algorithm>
+
 BvhTree::BvhTree(PhysicsObject* physicsObject)
 {
 	this->physicsObject = physicsObject;

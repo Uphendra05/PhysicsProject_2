@@ -1,9 +1,9 @@
 #pragma once
 
 #include<vector>
-
 #include "BvhNode.h" 
-
+#include <limits>
+#include <algorithm>
 
 class  PhysicsObject;
 class BvhTree

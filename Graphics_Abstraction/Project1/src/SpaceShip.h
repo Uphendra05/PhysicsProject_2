@@ -25,7 +25,8 @@ private:
 	PhysicsEngine* engine;
 	Camera* camera;
 
-	float speed = 20;
 	glm::vec3 Direction = glm::vec3(0, 0, 0);
+	glm::vec3 cameraOffset = glm::vec3(0, -2, 3.5f);
+	float speed = 20;
 };
 

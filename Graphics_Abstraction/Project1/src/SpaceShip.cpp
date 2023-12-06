@@ -43,7 +43,9 @@ void SpaceShip:: LoadModel()
 void SpaceShip::Update(float deltaTime)
 {
 
-	SpaceShipPhysics->velocity = Direction * speed * deltaTime;
+	SpaceShipPhysics->velocity = Direction * speed;
+
+	camera->Position = model->transform.position -  cameraOffset;
 }
 
 void SpaceShip::SpaceShipInputs(GLFWwindow* window, float deltaTime)
@@ -51,15 +53,32 @@ void SpaceShip::SpaceShipInputs(GLFWwindow* window, float deltaTime)
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
 		Direction = glm::vec3(0, 0, 1);
-		camera->Position += -model->transform.GetForward() *deltaTime;
+		//camera->Position += -model->transform.GetForward() * deltaTime;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
 		Direction = glm::vec3(0, 0, -1);
 	}
-	else  
+	else   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		Direction = glm::vec3(-1, 0, 0);
+	}
+	else  if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	{
+		Direction = glm::vec3(1, 0, 0);
+	}
+	else if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+	{
+		Direction = glm::vec3(0, 1, 0);
+	}
+	else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	{
+		Direction = glm::vec3(0, -1, 0);
+	}
+	else
 	{
 		Direction = glm::vec3(0, 0, 0);
 	}
+
 
 }
