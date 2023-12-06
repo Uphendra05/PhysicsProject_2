@@ -82,5 +82,5 @@ void SpaceShip::SpaceShipInputs(GLFWwindow* window, float deltaTime)
 		Direction = glm::vec3(0, 0, 0);
 	}
 
-
+	
 }

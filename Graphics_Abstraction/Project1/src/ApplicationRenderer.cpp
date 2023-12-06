@@ -513,12 +513,40 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
          }
          if (key == GLFW_KEY_R && action == GLFW_PRESS)
          {
-             CityModel->transform.position.x += 5;
-             CityModel->transform.SetRotation(glm::vec3(
-                 CityModel->transform.rotation.x + 30, CityModel->transform.rotation.y, CityModel->transform.rotation.z));
-             CityModel->transform.scale.x += 5;
-             CityModel->transform.scale.y += 5;
-             CityModel->transform.scale.z += 5;
+             
+            spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x, spaceshipEntity->model->transform.rotation.y + 20, spaceshipEntity->model->transform.rotation.z));
+             
+         }
+         if (key == GLFW_KEY_T && action == GLFW_PRESS)
+         {
+
+             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x, spaceshipEntity->model->transform.rotation.y - 20, spaceshipEntity->model->transform.rotation.z));
+
+         }
+         if (key == GLFW_KEY_Y && action == GLFW_PRESS)
+         {
+
+             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x + 20, spaceshipEntity->model->transform.rotation.y , spaceshipEntity->model->transform.rotation.z));
+
+         }
+         if (key == GLFW_KEY_U && action == GLFW_PRESS)
+         {
+
+             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x - 20, spaceshipEntity->model->transform.rotation.y , spaceshipEntity->model->transform.rotation.z));
+
+         }
+
+         if (key == GLFW_KEY_I && action == GLFW_PRESS)
+         {
+
+             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x , spaceshipEntity->model->transform.rotation.y, spaceshipEntity->model->transform.rotation.z + 20));
+
+         }
+         if (key == GLFW_KEY_O && action == GLFW_PRESS)
+         {
+
+             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x , spaceshipEntity->model->transform.rotation.y, spaceshipEntity->model->transform.rotation.z - 20));
+
          }
          
  }
