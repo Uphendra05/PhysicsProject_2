@@ -5,7 +5,7 @@
 class SpaceShip
 {
 public:
-	SpaceShip(GraphicsRender& render, Shader* shader, PhysicsEngine& engine);
+	SpaceShip(GraphicsRender& render, Shader* shader, PhysicsEngine& engine, Camera& camera);
 	SpaceShip();
 	~SpaceShip();
 
@@ -16,15 +16,16 @@ public:
 	void LoadModel();
 
 	void Update(float deltaTime);
-	void SpaceShipInputs(GLFWwindow* window);
+	void UpdateCamera();
+	void SpaceShipInputs(GLFWwindow* window, float deltaTime);
 
 private:
 	GraphicsRender* render;
 	Shader* defaultshader;
 	PhysicsEngine* engine;
+	Camera* camera;
 
-
-	float speed = 2;
+	float speed = 20;
 	glm::vec3 Direction = glm::vec3(0, 0, 0);
 };
 

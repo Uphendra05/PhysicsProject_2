@@ -75,7 +75,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
     render.AssignStencilShader(StencilShader);
-    camera.Position = glm::vec3(0, 0, - 1.0f);
+   // camera.Position = glm::vec3(0, 0, - 1.0f);
 }
 
 
@@ -211,7 +211,7 @@ void ApplicationRenderer::Start()
 
      //////////////////////////////////////////////////////////
      //////SPACE SHIP ENTITY
-     spaceshipEntity = new SpaceShip(render, defaultShader, PhysicsEngine);
+     spaceshipEntity = new SpaceShip(render, defaultShader, PhysicsEngine,camera);
      spaceshipEntity->LoadModel();
 
 
@@ -356,7 +356,7 @@ void ApplicationRenderer::PostRender()
 
     spaceshipEntity->Update(deltaTime);
  
-   // DrawDebugBvhNodeAABB(cityPhysics->BvhAABBTree->root);
+    DrawDebugModelAABB(spaceshipEntity->SpaceShipPhysics->UpdateAABB());
 }
 
 void ApplicationRenderer::Clear()
@@ -370,28 +370,28 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    float cameraSpeed=25;
+    float cameraSpeed=2;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(FORWARD, deltaTime * cameraSpeed);
+       // camera.ProcessKeyboard(FORWARD, deltaTime * cameraSpeed);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(BACKWARD, deltaTime * cameraSpeed);
+     //   camera.ProcessKeyboard(BACKWARD, deltaTime * cameraSpeed);
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(LEFT, deltaTime * cameraSpeed);
+      //  camera.ProcessKeyboard(LEFT, deltaTime * cameraSpeed);
 
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(RIGHT, deltaTime * cameraSpeed);
+      //  camera.ProcessKeyboard(RIGHT, deltaTime * cameraSpeed);
 
     }
 
-    spaceshipEntity->SpaceShipInputs(window);
+    spaceshipEntity->SpaceShipInputs(window,deltaTime);
 
 
 }
@@ -408,7 +408,7 @@ void ApplicationRenderer::DrawDebugModelAABB( const cAABB& aabb)
         debugCube->transform.SetRotation(glm::vec3(0));
         debugCube->transform.SetScale(targetExtents);
         //render.AddModelsAndShader(debugCube, defaultShader);
-        debugCube->isWireFrame = true;
+        debugCube->meshes[0]->isWireFrame = true;
         debugCube->Draw(*lightShader);
 
 
