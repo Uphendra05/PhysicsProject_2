@@ -26,7 +26,12 @@ private:
 	Camera* camera;
 
 	glm::vec3 Direction = glm::vec3(0, 0, 0);
-	glm::vec3 cameraOffset = glm::vec3(0, -2, 3.5f);
+	float yoffset=2 ;
+	float followDistance =3.5f;
+	
+
 	float speed = 5;
+
+	bool isDebugAAABDraw;
 };
 

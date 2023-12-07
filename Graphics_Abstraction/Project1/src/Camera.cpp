@@ -72,3 +72,27 @@ void Camera::updateCameraVectors()
 
     
 }
+
+void Camera::SetCameraPosition(const glm::vec3& position)
+{
+    Position = position;
+}
+
+void Camera::SetCameraRotation(const glm::vec3& rotation)
+{
+    Pitch = rotation.x;
+    Yaw = rotation.y;
+
+    SetCameraForward();
+}
+
+void Camera::SetCameraForward()
+{
+    glm::vec3 direction;
+
+    direction.x = glm::cos(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch));
+    direction.y = glm::sin(glm::radians(Pitch));
+    direction.z = glm::sin(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch));
+
+    Front = glm::normalize(direction);
+}

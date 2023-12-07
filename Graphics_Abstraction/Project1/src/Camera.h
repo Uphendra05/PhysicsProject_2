@@ -89,6 +89,11 @@ public:
             updateCameraVectors();
 
         }
+
+        void SetCameraPosition(const glm::vec3& position);
+        void SetCameraRotation(const glm::vec3& Rotation);
+        void SetCameraForward();
+
 private:
     // calculates the front vector from the Camera's (updated) Euler Angles
    // void updateCameraVectors();

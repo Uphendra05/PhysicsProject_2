@@ -61,33 +61,44 @@ void SpaceShip:: LoadModel()
 void SpaceShip::Update(float deltaTime)
 {
 
+
+
+
+	glm::vec3 forward = model->transform.GetForward();
+
+	camera->SetCameraPosition(model->transform.position + forward  *followDistance + glm::vec3(0, yoffset, 0));
+
 	//SpaceShipPhysics->velocity = Direction * speed;
 
-	//camera->Position = model->transform.position -  cameraOffset;
+	//camera->Position = model->transform.position -  cameraOffset;m
 
-	float spaceshipPitch = glm::degrees(asin(-model->transform.GetForward().y));
-	float spaceshipYaw = glm::degrees(atan2(model->transform.GetForward().x, model->transform.GetForward().z));
+	//float spaceshipPitch = glm::degrees(asin(-model->transform.GetForward().y));
+	//float spaceshipYaw = glm::degrees(atan2(model->transform.GetForward().x, model->transform.GetForward().z));
 
-	// Set the camera's pitch and yaw
+	//// Set the camera's pitch and yaw
 
-	// Obtain the model matrix of the spaceship
-	glm::mat4 modelMatrix = model->transform.GetModelMatrix();
+	//// Obtain the model matrix of the spaceship
+	//glm::mat4 modelMatrix = model->transform.GetModelMatrix();
 
-	// Rotate the original camera offset by the spaceship's rotation
-	glm::vec3 rotatedCameraOffset = glm::rotate(glm::mat4(1.0f), glm::radians(model->transform.rotation.y), -model->transform.GetUp()) * glm::vec4(cameraOffset, 1.0f);
+	//// Rotate the original camera offset by the spaceship's rotation
+	//glm::vec3 rotatedCameraOffset = glm::rotate(glm::mat4(1.0f), glm::radians(model->transform.rotation.y), -model->transform.GetUp()) * glm::vec4(cameraOffset, 1.0f);
 
-	// Calculate the new camera position relative to the rotated spaceship
-	glm::vec3 cameraPosition = model->transform.position - rotatedCameraOffset;
+	//// Calculate the new camera position relative to the rotated spaceship
+	//glm::vec3 cameraPosition = model->transform.position - rotatedCameraOffset;
 
-	// Set the camera's position and update its view matrix
-	camera->Position = cameraPosition;
-	camera->updateCameraVectors();
+	//// Set the camera's position and update its view matrix
+	//camera->Position = cameraPosition;
+	//camera->updateCameraVectors();
 
 	DrawAABBCollision(SpaceShipPhysics);
 }
 
 void SpaceShip::DrawAABBCollision(PhysicsObject* physicsObject)
 {
+	if (!isDebugAAABDraw)
+	{
+		return;
+	}
 	std::vector<cAABB> collisionAABBs = physicsObject->GetCollisionAABBs();
 
 	for (size_t i = 0; i < collisionAABBs.size(); i++)
