@@ -54,7 +54,6 @@ unsigned int Texture::loadTexture(char const* path)
 		std::cout << "Texture failed to load at path: " << path << std::endl;
 		stbi_image_free(data);
 	}
-	std::cout << "LoadedTexture successfully : " << path << std::endl;
 	return textureID;
 }
 
@@ -96,7 +95,7 @@ unsigned int Texture::TextureFromFile(const char* path, const std::string& direc
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		std::cout << "           " << std::endl;
-		std::cout << "TEXTURES LOADING......... :" << std::endl;
+		//std::cout << "TEXTURES LOADING......... :" << std::endl;
 		std::cout << path << directory << std::endl;
 
 

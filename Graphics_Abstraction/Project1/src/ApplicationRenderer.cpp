@@ -193,7 +193,7 @@ void ApplicationRenderer::Start()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
      modelData = loadModelDataFromFile("Model.txt");
-     CityModel = new Model("Models/White//White.obj");
+     CityModel = new Model("Models/White//White.obj",false);
      CityModel->transform.SetPosition(glm::vec3(0,-15,0));
      CityModel->transform.SetRotation(glm::vec3(0,0,0));
      CityModel->transform.SetScale(glm::vec3(0.1f));
@@ -393,7 +393,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
     }
 
-    spaceshipEntity->SpaceShipInputs(window,deltaTime);
+   // spaceshipEntity->SpaceShipInputs(window,deltaTime);
 
 
 }

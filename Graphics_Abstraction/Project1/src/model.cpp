@@ -298,10 +298,19 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
     
      }
 
+     for (unsigned int i = 0; i < textures_loaded.size(); i++)
+     {
+         if (std::strcmp(textures_loaded[i]->path.data(), path.c_str()) == 0)
+         {
+             return textures_loaded[i];
+         }
+     }
+
      Texture* defaultTexture = new Texture(path);
      defaultTexture->type = typeName.c_str();
 
      std::cout << "Default Texture Loaded: " << defaultTexture->path << std::endl;
+     textures_loaded.push_back(defaultTexture);
      return defaultTexture;
  }
 
@@ -318,18 +327,18 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
          mat->GetTexture(type, i, &texString);
 
          std::cout << " texutre path : " << texString.C_Str() << std::endl;
-
+         std::string filename = std::string(texString.C_Str());
+         filename = directory + '/' + filename;
+         std::ifstream file(filename);
          for (unsigned int i = 0; i < textures_loaded.size(); i++)
          {
-             if (std::strcmp(textures_loaded[i]->path.data(), texString.C_Str()) == 0)
+             if (std::strcmp(textures_loaded[i]->path.data(), filename.c_str()) == 0)
              {
                  return textures_loaded[i];
              }
          }
 
-         std::string filename = std::string(texString.C_Str());
-         filename = directory + '/' + filename;
-         std::ifstream file(filename);
+
          if (file.good())
          {
              Texture* texture = new Texture(filename);
