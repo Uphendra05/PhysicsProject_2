@@ -6,6 +6,8 @@ SpaceShip::SpaceShip(GraphicsRender& render, Shader* shader, PhysicsEngine& engi
 	this->defaultshader = shader;
 	this->engine = &engine;
 	this->camera = &camera;
+
+	InputManager::GetInstance().AddListener(this);
 }
 
 SpaceShip::SpaceShip()
@@ -18,7 +20,7 @@ SpaceShip::~SpaceShip()
 
 void SpaceShip:: LoadModel()
 {
-	model = new Model("Models/Spaceship/Spaceship.obj");
+	model = new Model("Models/Spaceship/Ship2.obj");
 	model->id = "SpaceShip";
 	model->transform.SetPosition(glm::vec3(0, 5, 2));
 	model->transform.SetScale(glm::vec3(0.5f));
@@ -61,35 +63,8 @@ void SpaceShip:: LoadModel()
 void SpaceShip::Update(float deltaTime)
 {
 
-
-
-
 	glm::vec3 forward = model->transform.GetForward();
-
 	camera->SetCameraPosition(model->transform.position + forward  *followDistance + glm::vec3(0, yoffset, 0));
-
-	//SpaceShipPhysics->velocity = Direction * speed;
-
-	//camera->Position = model->transform.position -  cameraOffset;m
-
-	//float spaceshipPitch = glm::degrees(asin(-model->transform.GetForward().y));
-	//float spaceshipYaw = glm::degrees(atan2(model->transform.GetForward().x, model->transform.GetForward().z));
-
-	//// Set the camera's pitch and yaw
-
-	//// Obtain the model matrix of the spaceship
-	//glm::mat4 modelMatrix = model->transform.GetModelMatrix();
-
-	//// Rotate the original camera offset by the spaceship's rotation
-	//glm::vec3 rotatedCameraOffset = glm::rotate(glm::mat4(1.0f), glm::radians(model->transform.rotation.y), -model->transform.GetUp()) * glm::vec4(cameraOffset, 1.0f);
-
-	//// Calculate the new camera position relative to the rotated spaceship
-	//glm::vec3 cameraPosition = model->transform.position - rotatedCameraOffset;
-
-	//// Set the camera's position and update its view matrix
-	//camera->Position = cameraPosition;
-	//camera->updateCameraVectors();
-
 	DrawAABBCollision(SpaceShipPhysics);
 }
 
@@ -112,25 +87,20 @@ void SpaceShip::SpaceShipInputs(GLFWwindow* window, float deltaTime)
 {
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
-		//Direction = glm::vec3(0, 0, 1);
-		//Direction = -model->transform.GetForward();
+
 		SpaceShipPhysics->velocity = -model->transform.GetForward() *speed;
-		//camera->Position += -model->transform.GetForward() * deltaTime;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		//Direction = glm::vec3(0, 0, -1);
-		//Direction = model->transform.GetForward();
 		SpaceShipPhysics->velocity = model->transform.GetForward() * speed;
 	}
 	else   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 	{
-		//Direction = -model->transform.GetRight();
 		SpaceShipPhysics->velocity = -model->transform.GetRight() * speed;
 	}
 	else  if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
-	//	Direction = model->transform.GetRight();
+
 		SpaceShipPhysics->velocity = model->transform.GetRight() * speed;
 	}
 	else if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
@@ -153,4 +123,80 @@ void SpaceShip::SpaceShipInputs(GLFWwindow* window, float deltaTime)
 	
 
 	
+}
+
+void SpaceShip::OnKeyPressed(const int& key)
+{
+	if (key == GLFW_KEY_W)
+	{
+		SpaceShipPhysics->velocity = -model->transform.GetForward() * speed;
+	}
+	else if(key == GLFW_KEY_S)
+	{
+		SpaceShipPhysics->velocity = model->transform.GetForward() * speed;
+	}
+
+	else if (key == GLFW_KEY_D)
+	{
+		SpaceShipPhysics->velocity = -model->transform.GetRight() * speed;
+	}
+
+	else if (key == GLFW_KEY_A)
+	{
+		SpaceShipPhysics->velocity = model->transform.GetRight() * speed;
+	}
+	else if (key == GLFW_KEY_Q)
+	{
+		SpaceShipPhysics->velocity = model->transform.GetUp() * speed;
+	}
+	else if (key == GLFW_KEY_E)
+	{
+		SpaceShipPhysics->velocity = -model->transform.GetUp() * speed;
+	}
+
+
+	else if (key == GLFW_KEY_LEFT)  //LEFT
+	{
+		model->transform.SetRotation(glm::vec3(model->transform.rotation.x, 
+			model->transform.rotation.y + rotationAngle,
+			model->transform.rotation.z));
+
+	}
+
+	else if (key == GLFW_KEY_RIGHT) //RIGHT
+	{
+		model->transform.SetRotation(glm::vec3(model->transform.rotation.x,
+			model->transform.rotation.y - rotationAngle,
+			model->transform.rotation.z));
+
+	}
+	else if (key == GLFW_KEY_UP) //UP
+	{
+		model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
+			model->transform.rotation.y,
+			model->transform.rotation.z - rotationAngle));
+
+	}
+	else if (key == GLFW_KEY_DOWN) //DOWN
+	{
+		model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
+			model->transform.rotation.y,
+			model->transform.rotation.z + rotationAngle));
+
+	}
+
+	camera->SetCameraPosition(model->transform.position + model->transform.GetForward() * followDistance + glm::vec3(0, yoffset, 0));
+
+    if (key == GLFW_KEY_0)
+	{
+		isDebugAAABDraw = !isDebugAAABDraw;
+	}
+}
+
+void SpaceShip::OnKeyReleased(const int& key)
+{
+}
+
+void SpaceShip::OnKeyHeld(const int& key)
+{
 }

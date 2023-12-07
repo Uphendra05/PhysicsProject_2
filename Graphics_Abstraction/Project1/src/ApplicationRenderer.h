@@ -17,6 +17,7 @@
 #include "GraphicsRender.h"
 #include "CameraMovement.h"
 #include "SpaceShip.h"
+#include "InputManager.h"
 struct ModelData
 {
 

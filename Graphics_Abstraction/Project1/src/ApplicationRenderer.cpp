@@ -453,59 +453,22 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
 
  void ApplicationRenderer::KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods)
  {  
-         if (key == GLFW_KEY_V && action == GLFW_PRESS)
-         {
-
-            
-             std::cout << "V pressed" << std::endl;
-
-             std::vector<Model*> listOfModels = render.GetModelList();
-            
 
 
-             selectedModelCount++;
+     if (action == GLFW_PRESS)
+     {
+         InputManager::GetInstance().OnKeyPressed(key);
+     }
+     else if (action == GLFW_RELEASE)
+     {
+         InputManager::GetInstance().OnKeyReleased(key);
+     }
+     else if (action == GLFW_REPEAT)
+     {
+         InputManager::GetInstance().OnKeyHeld(key);
+     }
 
-             if (selectedModelCount > listOfModels.size()-1)
-             {
-                 selectedModelCount = 0;
-             }
-
-            
-             render.selectedModel = listOfModels[selectedModelCount];
-
-
-         }
-
-         if (key == GLFW_KEY_X && action == GLFW_PRESS)
-         {
-             render.selectedModel = nullptr;
-
-         }
-         if (key == GLFW_KEY_C && action == GLFW_PRESS)
-         {
-             cameraMoveToTarget = !cameraMoveToTarget;
-
-             if (cameraMoveToTarget)
-             {
-                 //camera.Position = glm::vec3(0);
-             }
-         }
-         if (key == GLFW_KEY_1 && action == GLFW_PRESS)
-         {
-             
-
-              
-         }
-
-         if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-         {
-
-
-             //cameraMoveToTarget = !cameraMoveToTarget;
-
-         }
-
-         if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+         /*if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
          {
              recusiveCount--;
          }
@@ -549,7 +512,7 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
 
              spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x , spaceshipEntity->model->transform.rotation.y, spaceshipEntity->model->transform.rotation.z - 20));
 
-         }
+         }*/
          
  }
 
