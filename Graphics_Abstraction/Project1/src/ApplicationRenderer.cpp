@@ -242,7 +242,7 @@ void ApplicationRenderer::Start()
      up = camera.transform.GetUp();
      right = camera.transform.GetRight();
 
-     globeManager = new GlobeManager(render, defaultShader, PhysicsEngine);
+     globeManager = new GlobeManager(render, defaultShader, PhysicsEngine,*xWingBullet,window);
      globeManager->Start();
 
 
@@ -386,14 +386,18 @@ void ApplicationRenderer::PostRender()
 
     spaceshipEntity->Update(deltaTime);
 
-
+    globeManager->Update();
    
     if (startXWing)
     {
         bulletLookAt = new LookAt(xWingBullet->model, PointB->spawnPoint);
         bulletLookAt->Update();
 
-        xWingBullet->Update(deltaTime);
+        if (!xWingBullet->isCollided)
+        {
+            xWingBullet->Update(deltaTime);
+
+        }
 
         if (!xWingEntity->isCollided)
         {
@@ -573,6 +577,16 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
          startXWing = false;
 
      }
+     if (key == GLFW_KEY_4 && action == GLFW_PRESS)
+     {
+         globeManager->ShieldOne->currentHealth -= globeManager->ShieldOne->bullet->damageCount;
+
+     }
+     if (key == GLFW_KEY_5 && action == GLFW_PRESS)
+     {
+         globeManager->ShieldTwo->currentHealth -= globeManager->ShieldTwo->bullet->damageCount;
+
+     }
          
 
          
@@ -580,6 +594,8 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
 
  void ApplicationRenderer::XWingSettings()
  {
+     //render.ClearLineSpheres();
+
      PointA->spawnPoint->isVisible = true;
      PointB->spawnPoint->isVisible = true;
 
@@ -620,12 +636,15 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
      xWingBullet->model->transform.SetPosition(xWingEntity->model->transform.position + glm::vec3(-10,2,0));
      xWingBullet->model->isVisible = false;
      xWingBullet->bulletPhyObj->collisionCallbool = true;
+     globeManager->ShieldOne->globePhyObj->collisionCallbool = true;
+     globeManager->ShieldTwo->globePhyObj->collisionCallbool = true;
      xWingEntity->model->isVisible = true;
      xWingEntity->isCollided = false;
+     xWingBullet->isCollided = false;
      startXWing = true;
 
 
-
+    
  }
 
 

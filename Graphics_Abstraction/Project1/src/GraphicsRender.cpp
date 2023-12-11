@@ -25,6 +25,39 @@ void GraphicsRender::AddModelsAndShader(Model& model, Shader& Shader)
 	m_Shaders.push_back(&Shader);
 }
 
+void GraphicsRender::AddLineSphereModelsAndShader(Model* model, Shader* Shader)
+{
+	m_LineSphereModels.push_back(model);
+	m_LineSphereShaders.push_back(Shader);
+
+}
+
+void GraphicsRender::ClearLineSpheres()
+{
+	//Deleteing model pointers
+	if (m_LineSphereModels.size() > 0)
+	{
+		for (Model* model : m_LineSphereModels)
+		{
+			delete model;
+
+		}
+		m_LineSphereModels.clear();
+	}
+
+	//Deleteing shader pointers
+	if (m_LineSphereShaders.size() > 0)
+	{
+		for (Shader* shader : m_LineSphereShaders)
+		{
+			delete shader;
+
+		}
+		m_LineSphereShaders.clear();
+	}
+
+}
+
 void GraphicsRender::AddTransparentModels(Model* model, Shader* Shader)
 {
 	m_transparentModels.push_back(model);
@@ -115,6 +148,18 @@ void GraphicsRender::Draw()
 
 		}
 		m_Models[i]->Draw(*m_Shaders[i]);
+
+	}
+
+	for (size_t i = 0; i <  m_LineSphereModels.size(); i++)
+	{
+		if (m_LineSphereModels[i] == selectedModel)
+		{
+
+			continue;
+
+		}
+		m_LineSphereModels[i]->Draw(*m_LineSphereShaders[i]);
 
 	}
 

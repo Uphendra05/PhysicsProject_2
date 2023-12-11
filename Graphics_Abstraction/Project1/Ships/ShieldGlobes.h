@@ -4,6 +4,7 @@
 #include "../../src/PhysicsEngine.h"
 #include "../../Ships/Bullet.h"
 
+
 class ShieldGlobes
 {
 public:
@@ -16,6 +17,7 @@ public:
 	void End();
 
 	void CalculateHealth(int damageCount);
+	void AssignWindow(GLFWwindow* window, const char* title);
 	void Destroy();
 
 	Model* model;
@@ -25,13 +27,13 @@ public:
 	Shader* defaultShader;
 
 	void AssignBullet(Bullet& bulletEntity);
-	
-
-private:
+	int currentHealth;
 
 	Bullet* bullet;
-	int currentHealth;
-	
+	GLFWwindow* window;
+	const char* title;
+private:
+
 	int maxHealth = 100;
 };
 

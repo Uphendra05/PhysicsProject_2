@@ -204,6 +204,8 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
     //}
     
     // return a mesh object created from the extracted mesh data
+
+   
     return std::make_shared<Mesh>(vertices, indices, meshMaterial);
  }
 

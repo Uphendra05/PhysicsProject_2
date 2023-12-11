@@ -52,6 +52,8 @@ void XWing::Start()
 
 				isCollided = true;
 			}
+
+			
 			
 			
 		});

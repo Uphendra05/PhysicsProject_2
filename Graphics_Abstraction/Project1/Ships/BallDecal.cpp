@@ -14,7 +14,7 @@ BallDecal::~BallDecal()
 
 void BallDecal::Start()
 {
-    model = new Model("Models/IsoSphere/Isoshphere.ply");
+    model = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply");
     model->id = "SpawnPoint";
     model->transform.scale = glm::vec3(0.5);
     renderer->AddModelsAndShader(model, defaultShader);

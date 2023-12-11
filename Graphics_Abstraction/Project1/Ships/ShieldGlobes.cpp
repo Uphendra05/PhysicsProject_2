@@ -20,7 +20,7 @@ void ShieldGlobes::Start()
 
 	model = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply");
 	model->id = "Globe";
-	model->transform.SetScale(glm::vec3(4.45f));
+	model->transform.SetScale(glm::vec3(2.45f));
 	renderer->AddModelsAndShader(model, defaultShader);
 
 	globePhyObj = new PhysicsObject(model);
@@ -38,7 +38,8 @@ void ShieldGlobes::Start()
 
 			if (other->model->id == "Bullet")
 			{
-				CalculateHealth(bullet->damageCount);
+				std::cout << "Globe : Bullet" << std::endl;
+				globePhyObj->collisionCallbool = false;
 				std::cout << "Current Health : " << currentHealth << std::endl;
 				//this->model->transform.position = other->model->transform.position;
 			}
@@ -63,13 +64,24 @@ void ShieldGlobes::End()
 void ShieldGlobes::CalculateHealth(int damageCount)
 {
 	
-    damageCount -= currentHealth;
+	currentHealth -= damageCount;
+
+	currentHealth = glm::clamp(currentHealth, 0, 100);
+	
+	glfwSetWindowTitle(window, title);
 	
     if (currentHealth <= 0)
 	{
 		Destroy();
 	}
 
+}
+
+void ShieldGlobes::AssignWindow(GLFWwindow* window, const char* title)
+{
+
+	this->window = window;
+	this->title = title;
 }
 
 void ShieldGlobes::Destroy()

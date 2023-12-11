@@ -50,6 +50,10 @@ public:
 	void AddAlphaModelsAndShader(Model* model, Shader* Shader);
 	void AddModelsAndShader(Model& model, Shader& Shader);
 
+
+	void AddLineSphereModelsAndShader(Model* model, Shader* Shader);
+	void ClearLineSpheres();
+
 	void AddTransparentModels(Model* model, Shader* Shader);
 	void SetDefaultCube(Model* cube);
 	
@@ -77,8 +81,13 @@ private:
 	Shader* lightShader;
 	void ClearData();
 
+	
+
 	std::vector<Model*> m_Models;
 	std::vector<Shader*> m_Shaders;
+
+	std::vector<Model*> m_LineSphereModels;
+	std::vector<Shader*> m_LineSphereShaders;
 
 	std::vector<Model*> m_transparentModels;
 	std::vector<Shader*> m_transparentShaders;

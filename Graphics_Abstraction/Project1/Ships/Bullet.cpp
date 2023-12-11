@@ -43,6 +43,14 @@ void Bullet::Start()
 				
 			}
 
+			if (other->model->id == "Globe")
+			{
+				std::cout << "Bullet : Collided with Globe" << std::endl;
+				//model->isVisible = false;
+				bulletPhyObj->collisionCallbool = false;
+				isCollided = true;
+			}
+
 			
 		});
 

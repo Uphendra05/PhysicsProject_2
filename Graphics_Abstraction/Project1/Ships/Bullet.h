@@ -30,6 +30,7 @@ public:
 
 	float speed = 10;
 	int damageCount = 25;
+	bool isCollided;
 
 private:
 
