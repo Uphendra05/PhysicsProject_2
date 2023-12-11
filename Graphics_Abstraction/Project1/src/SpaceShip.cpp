@@ -63,9 +63,9 @@ void SpaceShip:: LoadModel()
 void SpaceShip::Update(float deltaTime)
 {
 
-	glm::vec3 forward = model->transform.GetForward();
-	camera->SetCameraPosition(model->transform.position + forward  *followDistance + glm::vec3(0, yoffset, 0));
-	DrawAABBCollision(SpaceShipPhysics);
+	//glm::vec3 forward = model->transform.GetForward();
+	//camera->SetCameraPosition(model->transform.position + forward  *followDistance + glm::vec3(0, yoffset, 0));
+	//DrawAABBCollision(SpaceShipPhysics);
 }
 
 void SpaceShip::DrawAABBCollision(PhysicsObject* physicsObject)
@@ -85,41 +85,41 @@ void SpaceShip::DrawAABBCollision(PhysicsObject* physicsObject)
 
 void SpaceShip::SpaceShipInputs(GLFWwindow* window, float deltaTime)
 {
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-	{
+	//if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	//{
 
-		SpaceShipPhysics->velocity = -model->transform.GetForward() *speed;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-	{
-		SpaceShipPhysics->velocity = model->transform.GetForward() * speed;
-	}
-	else   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-	{
-		SpaceShipPhysics->velocity = -model->transform.GetRight() * speed;
-	}
-	else  if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
+	//	SpaceShipPhysics->velocity = -model->transform.GetForward() *speed;
+	//}
+	//else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	//{
+	//	SpaceShipPhysics->velocity = model->transform.GetForward() * speed;
+	//}
+	//else   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	//{
+	//	SpaceShipPhysics->velocity = -model->transform.GetRight() * speed;
+	//}
+	//else  if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	//{
 
-		SpaceShipPhysics->velocity = model->transform.GetRight() * speed;
-	}
-	else if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-	{
-		//Direction = model->transform.GetUp();
-		SpaceShipPhysics->velocity = model->transform.GetUp() * speed;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-	{
-		//Direction = -model->transform.GetUp();
+	//	SpaceShipPhysics->velocity = model->transform.GetRight() * speed;
+	//}
+	//else if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+	//{
+	//	//Direction = model->transform.GetUp();
+	//	SpaceShipPhysics->velocity = model->transform.GetUp() * speed;
+	//}
+	//else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	//{
+	//	//Direction = -model->transform.GetUp();
 
-		SpaceShipPhysics->velocity = -model->transform.GetUp() * speed;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-	{
-		
-		SpaceShipPhysics->velocity = glm::vec3(0);
-		
-	}
+	//	SpaceShipPhysics->velocity = -model->transform.GetUp() * speed;
+	//}
+	//else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	//{
+	//	
+	//	SpaceShipPhysics->velocity = glm::vec3(0);
+	//	
+	//}
 	
 
 	
@@ -127,65 +127,65 @@ void SpaceShip::SpaceShipInputs(GLFWwindow* window, float deltaTime)
 
 void SpaceShip::OnKeyPressed(const int& key)
 {
-	if (key == GLFW_KEY_W)
-	{
-		SpaceShipPhysics->velocity = -model->transform.GetForward() * speed;
-	}
-	else if(key == GLFW_KEY_S)
-	{
-		SpaceShipPhysics->velocity = model->transform.GetForward() * speed;
-	}
+	//if (key == GLFW_KEY_W)
+	//{
+	//	SpaceShipPhysics->velocity = -model->transform.GetForward() * speed;
+	//}
+	//else if(key == GLFW_KEY_S)
+	//{
+	//	SpaceShipPhysics->velocity = model->transform.GetForward() * speed;
+	//}
 
-	else if (key == GLFW_KEY_D)
-	{
-		SpaceShipPhysics->velocity = -model->transform.GetRight() * speed;
-	}
+	//else if (key == GLFW_KEY_D)
+	//{
+	//	SpaceShipPhysics->velocity = -model->transform.GetRight() * speed;
+	//}
 
-	else if (key == GLFW_KEY_A)
-	{
-		SpaceShipPhysics->velocity = model->transform.GetRight() * speed;
-	}
-	else if (key == GLFW_KEY_Q)
-	{
-		SpaceShipPhysics->velocity = model->transform.GetUp() * speed;
-	}
-	else if (key == GLFW_KEY_E)
-	{
-		SpaceShipPhysics->velocity = -model->transform.GetUp() * speed;
-	}
+	//else if (key == GLFW_KEY_A)
+	//{
+	//	SpaceShipPhysics->velocity = model->transform.GetRight() * speed;
+	//}
+	//else if (key == GLFW_KEY_Q)
+	//{
+	//	SpaceShipPhysics->velocity = model->transform.GetUp() * speed;
+	//}
+	//else if (key == GLFW_KEY_E)
+	//{
+	//	SpaceShipPhysics->velocity = -model->transform.GetUp() * speed;
+	//}
 
 
-	else if (key == GLFW_KEY_LEFT)  //LEFT
-	{
-		model->transform.SetRotation(glm::vec3(model->transform.rotation.x, 
-			model->transform.rotation.y + rotationAngle,
-			model->transform.rotation.z));
+	//else if (key == GLFW_KEY_LEFT)  //LEFT
+	//{
+	//	model->transform.SetRotation(glm::vec3(model->transform.rotation.x, 
+	//		model->transform.rotation.y + rotationAngle,
+	//		model->transform.rotation.z));
 
-	}
+	//}
 
-	else if (key == GLFW_KEY_RIGHT) //RIGHT
-	{
-		model->transform.SetRotation(glm::vec3(model->transform.rotation.x,
-			model->transform.rotation.y - rotationAngle,
-			model->transform.rotation.z));
+	//else if (key == GLFW_KEY_RIGHT) //RIGHT
+	//{
+	//	model->transform.SetRotation(glm::vec3(model->transform.rotation.x,
+	//		model->transform.rotation.y - rotationAngle,
+	//		model->transform.rotation.z));
 
-	}
-	else if (key == GLFW_KEY_UP) //UP
-	{
-		model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
-			model->transform.rotation.y,
-			model->transform.rotation.z - rotationAngle));
+	//}
+	//else if (key == GLFW_KEY_UP) //UP
+	//{
+	//	model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
+	//		model->transform.rotation.y,
+	//		model->transform.rotation.z - rotationAngle));
 
-	}
-	else if (key == GLFW_KEY_DOWN) //DOWN
-	{
-		model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
-			model->transform.rotation.y,
-			model->transform.rotation.z + rotationAngle));
+	//}
+	//else if (key == GLFW_KEY_DOWN) //DOWN
+	//{
+	//	model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
+	//		model->transform.rotation.y,
+	//		model->transform.rotation.z + rotationAngle));
 
-	}
+	//}
 
-	camera->SetCameraPosition(model->transform.position + model->transform.GetForward() * followDistance + glm::vec3(0, yoffset, 0));
+	//camera->SetCameraPosition(model->transform.position + model->transform.GetForward() * followDistance + glm::vec3(0, yoffset, 0));
 
     if (key == GLFW_KEY_0)
 	{

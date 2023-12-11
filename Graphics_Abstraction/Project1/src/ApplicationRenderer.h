@@ -17,6 +17,11 @@
 #include "GraphicsRender.h"
 #include "CameraMovement.h"
 #include "SpaceShip.h"
+#include "../../Ships/StartDestroyer.h"
+#include "../../Ships/RandomPoints.h"
+#include "../../Ships/XWing.h"
+#include "../../Utilities/Lerp.h"
+#include "../../Utilities/LookAt.h"
 #include "InputManager.h"
 struct ModelData
 {
@@ -88,6 +93,16 @@ private:
 
 
 	SpaceShip* spaceshipEntity;
+	StarDestroyer* starDestroyerEntity;
+	RandomPoints* PointA;
+	RandomPoints* PointB;
+	XWing* xWingEntity;
+
+	LookAt* lookAtObj;
+	
+
+
+	Model* Sphere;
 
 	 int windowWidth;
 	 int  WindowHeight;
@@ -103,5 +118,6 @@ private:
 
 	 bool firstMouse;
 	 bool cameraMoveToTarget;
+	 bool startXWing;
 };
 

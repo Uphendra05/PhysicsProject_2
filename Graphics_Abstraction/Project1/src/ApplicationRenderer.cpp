@@ -173,7 +173,7 @@ void ApplicationRenderer::Start()
 
     render.SetLightShader(lightShader);
 
-    Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
+     Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
 
 
     //render.AddModelsAndShader(CamPlaceholder, defaultShader);
@@ -193,7 +193,8 @@ void ApplicationRenderer::Start()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
      modelData = loadModelDataFromFile("Model.txt");
-     CityModel = new Model("Models/White//White.obj",false);
+
+   /*  CityModel = new Model("Models/White//White.obj",false);
      CityModel->transform.SetPosition(glm::vec3(0,-15,0));
      CityModel->transform.SetRotation(glm::vec3(0,0,0));
      CityModel->transform.SetScale(glm::vec3(0.1f));
@@ -201,7 +202,7 @@ void ApplicationRenderer::Start()
 
      cityPhysics = new PhysicsObject(CityModel);
      cityPhysics->Initialize(MESH_TRIANGLES,false,STATIC);
-     PhysicsEngine.AddPhysicsObjects(cityPhysics);
+     PhysicsEngine.AddPhysicsObjects(cityPhysics);*/
 
 
 
@@ -213,8 +214,23 @@ void ApplicationRenderer::Start()
 
      //////////////////////////////////////////////////////////
      //////SPACE SHIP ENTITY
-     spaceshipEntity = new SpaceShip(render, defaultShader, PhysicsEngine,camera);
-     spaceshipEntity->LoadModel();
+    /* spaceshipEntity = new SpaceShip(render, defaultShader, PhysicsEngine,camera);
+     spaceshipEntity->LoadModel();*/
+
+     starDestroyerEntity = new StarDestroyer(render,defaultShader,PhysicsEngine);
+     starDestroyerEntity->Start();
+
+     PointA = new RandomPoints(render, defaultShader);
+     PointA->Start();
+     PointA->spawnPoint->isVisible = false;
+     
+
+     PointB = new RandomPoints(render, defaultShader);
+     PointB->Start();
+     PointB->spawnPoint->isVisible = false;
+
+     xWingEntity = new XWing(render, defaultShader, PhysicsEngine,10);
+     xWingEntity->Start();
 
 
 #pragma region Lights
@@ -293,7 +309,7 @@ void ApplicationRenderer::Render()
         SkyboxShader->setMat4("view", _skyboxview);
         SkyboxShader->setMat4("projection", _projection);
 
-       // skybox->Skyboxrender();
+        skybox->Skyboxrender();
         glDepthFunc(GL_LESS); 
 
 
@@ -305,7 +321,7 @@ void ApplicationRenderer::Render()
 
          defaultShader->setMat4("projection", _projection);
          defaultShader->setMat4("view", _view);
-         defaultShader->setVec3("viewPos", camera.Position.x, camera.Position.y, camera.Position.z);
+         defaultShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
          defaultShader->setFloat("time", scrollTime);
          defaultShader->setBool("isDepthBuffer", false);
 
@@ -330,7 +346,6 @@ void ApplicationRenderer::Render()
          // make models that it should not write in the stencil buffer
          render.Draw();
        
-
          if (cameraMoveToTarget)
          {
              camera.UpdateCameraPosition(deltaTime);
@@ -357,6 +372,14 @@ void ApplicationRenderer::PostRender()
     PhysicsEngine.Update(deltaTime);
 
     spaceshipEntity->Update(deltaTime);
+
+    if (startXWing)
+    {
+
+        lookAtObj = new LookAt(xWingEntity->model, PointB->spawnPoint);
+        lookAtObj->Update();
+        xWingEntity->Update(deltaTime);
+    }
  
   //  DrawDebugModelAABB(spaceshipEntity->SpaceShipPhysics->UpdateAABB());
 }
@@ -375,21 +398,21 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
     float cameraSpeed=2;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-       // camera.ProcessKeyboard(FORWARD, deltaTime * cameraSpeed);
+        camera.ProcessKeyboard(FORWARD, deltaTime * cameraSpeed);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-     //   camera.ProcessKeyboard(BACKWARD, deltaTime * cameraSpeed);
+       camera.ProcessKeyboard(BACKWARD, deltaTime * cameraSpeed);
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-      //  camera.ProcessKeyboard(LEFT, deltaTime * cameraSpeed);
+       camera.ProcessKeyboard(LEFT, deltaTime * cameraSpeed);
 
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-      //  camera.ProcessKeyboard(RIGHT, deltaTime * cameraSpeed);
+       camera.ProcessKeyboard(RIGHT, deltaTime * cameraSpeed);
 
     }
 
@@ -468,53 +491,49 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
          InputManager::GetInstance().OnKeyHeld(key);
      }
 
-         /*if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
-         {
-             recusiveCount--;
-         }
-         if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
-         {
-             recusiveCount++;
-         }
-         if (key == GLFW_KEY_R && action == GLFW_PRESS)
-         {
-             
-            spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x, spaceshipEntity->model->transform.rotation.y + 20, spaceshipEntity->model->transform.rotation.z));
-             
-         }
-         if (key == GLFW_KEY_T && action == GLFW_PRESS)
-         {
+     if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+     {
+         PointA->spawnPoint->isVisible = true;
+         PointB->spawnPoint->isVisible = true;
 
-             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x, spaceshipEntity->model->transform.rotation.y - 20, spaceshipEntity->model->transform.rotation.z));
+         glm::vec3 _pointA = PointA->GetRandomPointAInSpace();
+         glm::vec3 _pointB = PointB->GetRandomPointBInSpace();
 
-         }
-         if (key == GLFW_KEY_Y && action == GLFW_PRESS)
+         std::cout << "Point A : " << _pointA.x << " , " << _pointA.y << " , " << _pointA.z << std::endl;
+         std::cout << "Point B : " << _pointB.x << " , " << _pointB.y << " , " << _pointB.z <<std::endl;
+
+         PointA->spawnPoint->transform.position = _pointA;
+         PointB->spawnPoint->transform.position = _pointB;
+         PointB->spawnPoint->transform.SetScale(glm::vec3(1.4f));
+       
+
+         int example = glm::distance(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position);
+
+         for (size_t i = 0; i < example; i++)
          {
-
-             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x + 20, spaceshipEntity->model->transform.rotation.y , spaceshipEntity->model->transform.rotation.z));
-
-         }
-         if (key == GLFW_KEY_U && action == GLFW_PRESS)
-         {
-
-             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x - 20, spaceshipEntity->model->transform.rotation.y , spaceshipEntity->model->transform.rotation.z));
+             float t = static_cast<float>(i) / (example - 1);
+             glm::vec3 position = Lerp(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position, t);
+             Model* Sphere2 = new Model(*Sphere);
+             Sphere2->transform.SetPosition(position);
+             Sphere2->transform.SetScale(glm::vec3(0.1f));
+             render.AddModelsAndShader(Sphere2, lightShader);
 
          }
 
-         if (key == GLFW_KEY_I && action == GLFW_PRESS)
-         {
+         xWingEntity->AssignPoint(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position);
+         xWingEntity->model->transform.SetPosition(PointA->spawnPoint->transform.position);
+         xWingEntity->startPoint = xWingEntity->model->transform.position;
 
-             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x , spaceshipEntity->model->transform.rotation.y, spaceshipEntity->model->transform.rotation.z + 20));
+         startXWing = true;
 
-         }
-         if (key == GLFW_KEY_O && action == GLFW_PRESS)
-         {
 
-             spaceshipEntity->model->transform.SetRotation(glm::vec3(spaceshipEntity->model->transform.rotation.x , spaceshipEntity->model->transform.rotation.y, spaceshipEntity->model->transform.rotation.z - 20));
+     }
 
-         }*/
+         
          
  }
+
+
 
  void ApplicationRenderer::MouseCallBack(GLFWwindow* window, double xposIn, double yposIn)
  {

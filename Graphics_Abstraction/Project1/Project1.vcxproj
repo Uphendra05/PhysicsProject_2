@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="Ships\RandomPoints.cpp" />
+    <ClCompile Include="Ships\StarDestroyer.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\SpaceShip.cpp" />
     <ClCompile Include="src\PhysicsCollisionTypes.cpp" />
@@ -176,9 +178,13 @@
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
+    <ClCompile Include="Ships\XWing.cpp" />
+    <ClCompile Include="Utilities\LookAt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="Ships\RandomPoints.h" />
+    <ClInclude Include="Ships\StartDestroyer.h" />
     <ClInclude Include="src\iInputListener.h" />
     <ClInclude Include="src\InputManager.h" />
     <ClInclude Include="src\SpaceShip.h" />
@@ -218,6 +224,9 @@
     <ClInclude Include="src\VertexArray.h" />
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\VertexBufferLayout.h" />
+    <ClInclude Include="Ships\XWing.h" />
+    <ClInclude Include="Utilities\Lerp.h" />
+    <ClInclude Include="Utilities\LookAt.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\color.frag" />
