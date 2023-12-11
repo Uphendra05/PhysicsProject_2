@@ -232,6 +232,19 @@ void ApplicationRenderer::Start()
      xWingEntity = new XWing(render, defaultShader, PhysicsEngine,10);
      xWingEntity->Start();
 
+     xWingBullet = new Bullet(render, defaultShader, PhysicsEngine);
+     xWingBullet->Start();
+
+     decal = new BallDecal(render, defaultShader);
+     decal->Start();
+
+     xWingBullet->AssignBallDecal(*decal);
+     up = camera.transform.GetUp();
+     right = camera.transform.GetRight();
+
+     globeManager = new GlobeManager(render, defaultShader, PhysicsEngine);
+     globeManager->Start();
+
 
 #pragma region Lights
 
@@ -297,7 +310,7 @@ void ApplicationRenderer::Render()
 
         ProcessInput(window);
 
-        glm::mat4 _projection = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
+        glm::mat4 _projection = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 1000.0f);
         glm::mat4 _view = camera.GetViewMatrix();
         glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera.GetViewMatrix()));
 
@@ -373,14 +386,72 @@ void ApplicationRenderer::PostRender()
 
     spaceshipEntity->Update(deltaTime);
 
+
+   
     if (startXWing)
     {
+        bulletLookAt = new LookAt(xWingBullet->model, PointB->spawnPoint);
+        bulletLookAt->Update();
 
-        lookAtObj = new LookAt(xWingEntity->model, PointB->spawnPoint);
-        lookAtObj->Update();
+        xWingBullet->Update(deltaTime);
+
+        if (!xWingEntity->isCollided)
+        {
+           // camLookAt->lookAtTransfrom = ;
+            lookAtObj = new LookAt(xWingEntity->model, PointB->spawnPoint);
+            lookAtObj->Update();
+
+            camLookAt = new LookAt(camera.transform, xWingEntity->model);
+            camLookAt->CameraUpdate();
+           
+
+        }
+        else
+        {
+            xWingBullet->model->isVisible = true;
+
+            startXWing = false;
+            camera.transform.SetUp(camera.transform.GetUp());
+            camera.transform.SetRight(camera.transform.GetRight());
+            camera.GetViewMatrix();
+            camera.transform.SetOrientationFromDirections(-up , -right );
+            camera.transform.SetRotation(glm::vec3(0, -90,0));
+            std::cout << "camera Pos : " << camera.transform.position.x << " , " << camera.transform.position.y << " , " << camera.transform.position.z << std::endl;
+            std::cout << "camera Ros : " << camera.transform.rotation.x << " , " << camera.transform.rotation.y << " , " << camera.transform.rotation.z << std::endl;
+
+
+        }
+       
+       
+
+        
+        camera.transform.SetPosition( glm::vec3(xWingEntity->model->transform.position.x,0, xWingEntity->model->transform.position.z) + glm::vec3(-25, 5, 0));
+        
         xWingEntity->Update(deltaTime);
+
+       
+       
     }
- 
+
+    int distance = glm::distance(xWingEntity->model->transform.position, PointB->spawnPoint->transform.position);
+
+    if (distance < 1)
+    {
+        std::cout << "End point reaached" << std::endl;
+
+        startXWing = false;
+        if (!startXWing)
+        {
+            xWingEntity->model->isVisible = false;
+
+            //camera.transform.SetOrientationFromDirections(glm::vec3(0, 1, 0), glm::vec3(0, 1, 0));
+
+        }
+
+    }
+    
+
+    //DrawDebugBvhNodeAABB(starDestroyerEntity->shipPhyObj->BvhAABBTree->root);
   //  DrawDebugModelAABB(spaceshipEntity->SpaceShipPhysics->UpdateAABB());
 }
 
@@ -469,6 +540,7 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
 
 
 
+
  void ApplicationRenderer::SetViewPort(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
@@ -493,45 +565,69 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
 
      if (key == GLFW_KEY_2 && action == GLFW_PRESS)
      {
-         PointA->spawnPoint->isVisible = true;
-         PointB->spawnPoint->isVisible = true;
+         
+         XWingSettings();
+     }
+     if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+     {
+         startXWing = false;
 
-         glm::vec3 _pointA = PointA->GetRandomPointAInSpace();
-         glm::vec3 _pointB = PointB->GetRandomPointBInSpace();
+     }
+         
 
-         std::cout << "Point A : " << _pointA.x << " , " << _pointA.y << " , " << _pointA.z << std::endl;
-         std::cout << "Point B : " << _pointB.x << " , " << _pointB.y << " , " << _pointB.z <<std::endl;
+         
+ }
 
-         PointA->spawnPoint->transform.position = _pointA;
-         PointB->spawnPoint->transform.position = _pointB;
-         PointB->spawnPoint->transform.SetScale(glm::vec3(1.4f));
-       
+ void ApplicationRenderer::XWingSettings()
+ {
+     PointA->spawnPoint->isVisible = true;
+     PointB->spawnPoint->isVisible = true;
 
-         int example = glm::distance(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position);
+     glm::vec3 _pointA = PointA->GetRandomPointAInSpace();
+     glm::vec3 _pointB = PointB->GetRandomPointBInSpace();
 
-         for (size_t i = 0; i < example; i++)
-         {
-             float t = static_cast<float>(i) / (example - 1);
-             glm::vec3 position = Lerp(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position, t);
-             Model* Sphere2 = new Model(*Sphere);
-             Sphere2->transform.SetPosition(position);
-             Sphere2->transform.SetScale(glm::vec3(0.1f));
-             render.AddModelsAndShader(Sphere2, lightShader);
+     std::cout << "Point A : " << _pointA.x << " , " << _pointA.y << " , " << _pointA.z << std::endl;
+     std::cout << "Point B : " << _pointB.x << " , " << _pointB.y << " , " << _pointB.z << std::endl;
 
-         }
+     PointA->spawnPoint->transform.position = _pointA;
+     PointB->spawnPoint->transform.position = _pointB;
+     PointB->spawnPoint->transform.SetScale(glm::vec3(1.4f));
 
-         xWingEntity->AssignPoint(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position);
-         xWingEntity->model->transform.SetPosition(PointA->spawnPoint->transform.position);
-         xWingEntity->startPoint = xWingEntity->model->transform.position;
 
-         startXWing = true;
+     int example = glm::distance(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position);
 
+     for (size_t i = 0; i < example; i++)
+     {
+         float t = static_cast<float>(i) / (example - 1);
+         glm::vec3 position = Lerp(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position, t);
+         Model* Sphere2 = new Model(*Sphere);
+         Sphere2->transform.SetPosition(position);
+         Sphere2->transform.SetScale(glm::vec3(0.1f));
+         render.AddModelsAndShader(Sphere2, lightShader);
 
      }
 
-         
-         
+
+
+     xWingEntity->AssignPoint(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position);
+     xWingEntity->model->transform.SetPosition(PointA->spawnPoint->transform.position);
+
+    
+     xWingEntity->startPoint = xWingEntity->model->transform.position;
+    
+     xWingEntity->shipPhyObj->collisionCallbool = true;
+
+     xWingBullet->model->transform.SetPosition(xWingEntity->model->transform.position + glm::vec3(-10,2,0));
+     xWingBullet->model->isVisible = false;
+     xWingBullet->bulletPhyObj->collisionCallbool = true;
+     xWingEntity->model->isVisible = true;
+     xWingEntity->isCollided = false;
+     startXWing = true;
+
+
+
  }
+
 
 
 

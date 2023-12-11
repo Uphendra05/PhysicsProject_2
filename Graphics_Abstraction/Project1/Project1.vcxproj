@@ -141,6 +141,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="Ships\GlobeManager.cpp" />
+    <ClCompile Include="Ships\ShieldGlobes.cpp" />
+    <ClCompile Include="Ships\BallDecal.cpp" />
+    <ClCompile Include="Ships\Bullet.cpp" />
     <ClCompile Include="Ships\RandomPoints.cpp" />
     <ClCompile Include="Ships\StarDestroyer.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
@@ -183,6 +187,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="Ships\GlobeManager.h" />
+    <ClInclude Include="Ships\ShieldGlobes.h" />
+    <ClInclude Include="Ships\BallDecal.h" />
+    <ClInclude Include="Ships\Bullet.h" />
     <ClInclude Include="Ships\RandomPoints.h" />
     <ClInclude Include="Ships\StartDestroyer.h" />
     <ClInclude Include="src\iInputListener.h" />

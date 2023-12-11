@@ -133,17 +133,17 @@ void PhysicsEngine::UpdatePhysics(float deltatime)
                 dotProduct = -dotProduct;
             }
 
-            float bounciness = 0.1f; // adjust this value as needed
-            glm::vec3 reflected = glm::reflect(incident, normal);
+            //float bounciness = 0.0f; // adjust this value as needed
+            //glm::vec3 reflected = glm::reflect(incident, normal);
 
-            // Check if the length of the normal vector is not close to zero to prevent NaN
-            if (glm::length(normal) > 0.0001f) {
-                physicsObjects[i]->velocity = reflected * (physicsObjects[i]->bounciness);
-            }
-            else {
-                // Handle the case where the normal vector is close to zero
-                physicsObjects[i]->velocity = glm::vec3(0.0f);
-            }
+            //// Check if the length of the normal vector is not close to zero to prevent NaN
+            //if (glm::length(normal) > 0.0001f) {
+            //    physicsObjects[i]->velocity = reflected * (physicsObjects[i]->bounciness);
+            //}
+            //else {
+            //    // Handle the case where the normal vector is close to zero
+            //    physicsObjects[i]->velocity = glm::vec3(0.0f);
+            //}
 
            /* std::cout << "Pos X: " << physicsObjects[i]->velocity.x << "    Pos Y: " << physicsObjects[i]->velocity.y
                 << "    Pos Z: " << physicsObjects[i]->velocity.z << std::endl;*/

@@ -29,9 +29,9 @@ void RandomPoints::Update()
 glm::vec3 RandomPoints::GetRandomPointAInSpace()
 {
 
-	int x = RandomPointsGenerator(-30, -10);
-	int y = RandomPointsGenerator(-10, 10);
-	int z = RandomPointsGenerator(-30, -10);
+	int x = RandomPointsGenerator(-50, -30);
+	int y = RandomPointsGenerator(-10, 15);
+	int z = RandomPointsGenerator(10, 30);
 
 	return glm::vec3(x,y,z);
 }
@@ -39,8 +39,8 @@ glm::vec3 RandomPoints::GetRandomPointAInSpace()
 glm::vec3 RandomPoints::GetRandomPointBInSpace()
 {
 
-	int x = RandomPointsGenerator(10, 30);
-	int y = RandomPointsGenerator(-10, 10);
+	int x = RandomPointsGenerator(30, 50);
+	int y = RandomPointsGenerator(-10, 15);
 	int z = RandomPointsGenerator(10, 30);
 
 	return glm::vec3(x, y, z);

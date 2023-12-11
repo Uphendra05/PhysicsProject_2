@@ -22,6 +22,11 @@
 #include "../../Ships/XWing.h"
 #include "../../Utilities/Lerp.h"
 #include "../../Utilities/LookAt.h"
+#include "../../Ships/Bullet.h"
+#include "../../Ships/BallDecal.h"
+#include "../../Ships/GlobeManager.h"
+
+
 #include "InputManager.h"
 struct ModelData
 {
@@ -63,6 +68,8 @@ public:
 	void DrawDebugModelAABB(const cAABB& aabb);
 	void DrawDebugBvhNodeAABB(BvhNode* node);
 
+	void XWingSettings();
+
 	int recusiveCount = 0;
 
 
@@ -97,9 +104,16 @@ private:
 	RandomPoints* PointA;
 	RandomPoints* PointB;
 	XWing* xWingEntity;
+	Bullet* xWingBullet;
+	BallDecal* decal;
+	GlobeManager* globeManager;
 
 	LookAt* lookAtObj;
-	
+	LookAt* camLookAt;
+	LookAt* bulletLookAt;
+
+	glm::vec3 up;
+	glm::vec3 right;
 
 
 	Model* Sphere;
@@ -107,7 +121,7 @@ private:
 	 int windowWidth;
 	 int  WindowHeight;
 	 int selectedModelCount = 0;
-
+	 
 	 float lastX;
 	 float lastY;
 	 float deltaTime;

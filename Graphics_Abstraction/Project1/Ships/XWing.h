@@ -10,6 +10,7 @@ class XWing
 public:
 
 	XWing(GraphicsRender& render, Shader* shader, PhysicsEngine& engine, float time);
+	XWing(const XWing& CopyEntity);
 	~XWing();
 
 	void Start();
@@ -30,12 +31,16 @@ public:
 
 	glm::vec3 startPoint;
 
+	bool isCollided;
+
+
 
 private:
 
 	glm::vec3 endPoint;
 
 	float time;
+	float speed = 10;
 	
 
 

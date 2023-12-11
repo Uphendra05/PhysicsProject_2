@@ -9,6 +9,14 @@ LookAt::LookAt(Model* currentTransform, Model* lookAtTransform)
 
 }
 
+LookAt::LookAt(Transform& currentTransform, Model* lookAtTransform)
+{
+
+	this->camTransform = &currentTransform;
+	this->lookAtTransfrom = lookAtTransform;
+
+}
+
 LookAt::~LookAt()
 {
 }
@@ -28,12 +36,19 @@ void LookAt::Update()
 
 	currentTransform->transform.SetOrientationFromDirections(up, right);
 
-	/*
-	lookAtTransfrom->transform.SetOrientationFromDirections(up, -right);*/
+	
+	
+	
+}
 
-	//currentTransform->transform.SetRotation(lookAtTransfrom->transform.rotation + lookAtOffset);
-	
-	
+void LookAt::CameraUpdate()
+{
+	forward = glm::normalize(lookAtTransfrom->transform.position - camTransform->position);
+	right = glm::normalize(glm::cross(glm::vec3(0, 1, 0), forward));
+	up = glm::normalize(glm::cross(forward, right));
+
+	camTransform->SetOrientationFromDirections(up, right);
+
 }
 
 void LookAt::End()

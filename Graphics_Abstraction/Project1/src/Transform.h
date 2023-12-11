@@ -37,9 +37,11 @@ public:
     void SetForward(glm::vec3 newForward);
     void SetOrientationFromDirections(glm::vec3 newUp, glm::vec3 newRight);
 
-private:
-
     void UpdateQuaternionFromEuler();
     void UpdateEulerFromQuaternion();
+
+private:
+
+    
     
 };

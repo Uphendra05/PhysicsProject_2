@@ -22,7 +22,7 @@ public:
 private:
 	int maxNumOfTriangles = 3;
 	int maxtriCount = 3;
-	int AABBDepth = 8;
+	int AABBDepth = 12;
 	Model* model;
 };
 
