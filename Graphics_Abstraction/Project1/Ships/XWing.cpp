@@ -47,7 +47,7 @@ void XWing::Start()
 			{
 				std::cout << "Collided " << std::endl;
 				shipPhyObj->velocity = -model->transform.GetForward() * speed;
-				//model->transform.SetRotation(glm::vec3(0,90,0));
+				model->transform.SetRotation(glm::vec3(0,90,0));
 				shipPhyObj->collisionCallbool = false;
 
 				isCollided = true;

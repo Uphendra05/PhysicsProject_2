@@ -4,6 +4,12 @@
 #include "../../src/GraphicsRender.h"
 #include "../../src/PhysicsEngine.h"
 #include "../../Ships/BallDecal.h"
+#include "../../Ships/ShieldGlobes.h"
+#include <string>
+
+
+
+
 
 class Bullet
 {
@@ -14,9 +20,12 @@ public:
 
 	void Start();
 	void Update(float deltaTime);
+	void SeparateUpdate();
 	void End();
 
 	void AssignBallDecal(BallDecal& decal);
+
+	void ManageHealth(GLFWwindow* window);
 
 	Model* model;
 	GraphicsRender* renderer;
@@ -28,6 +37,12 @@ public:
 
 	BallDecal* decal;
 
+	ShieldGlobes* ShieldOne;
+	ShieldGlobes* ShieldTwo;
+
+	std::string health = "0";
+
+	
 	float speed = 10;
 	int damageCount = 25;
 	bool isCollided;

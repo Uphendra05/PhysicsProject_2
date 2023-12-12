@@ -24,7 +24,7 @@
 #include "../../Utilities/LookAt.h"
 #include "../../Ships/Bullet.h"
 #include "../../Ships/BallDecal.h"
-#include "../../Ships/GlobeManager.h"
+
 
 
 #include "InputManager.h"
@@ -106,8 +106,7 @@ private:
 	XWing* xWingEntity;
 	Bullet* xWingBullet;
 	BallDecal* decal;
-	GlobeManager* globeManager;
-
+	
 	LookAt* lookAtObj;
 	LookAt* camLookAt;
 	LookAt* bulletLookAt;
@@ -127,6 +126,7 @@ private:
 	 float deltaTime;
 	 double lastTime;
 	 float lastFrame;
+	 float time = 10;
 
 	 float scrollTime;
 

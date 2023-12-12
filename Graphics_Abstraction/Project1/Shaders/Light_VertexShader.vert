@@ -16,14 +16,26 @@ uniform mat4 projection;
 uniform float time = 0;
 
 uniform bool isScrollingTexture;
-
+uniform float explosionOffset = 0f;
+uniform bool isDestroyed = false;
 // function prototypes
 
 void main()
 {
-	
-    FragPosition = vec3(model * vec4(aPos, 1.0));
-    Normal =  mat3(transpose(inverse(model))) * aNormal;
+vec3 newPos;
+
+	if(isDestroyed)
+	{
+
+	  newPos = aPos * explosionOffset * aNormal;
+	}
+	else
+	{
+	  newPos = aPos;
+	}
+
+    FragPosition = vec3(model * vec4(newPos , 1.0));
+    Normal =  mat3(transpose(inverse(model))) * aNormal  ;
 	if(isScrollingTexture)
 	{
 
@@ -31,11 +43,11 @@ void main()
 	}
 	else
 	{	
-	  TextureCoordinates = aTexCoords;
+	  TextureCoordinates = aTexCoords ;
 	}
 	 meshColour = aColor;
-	//gl_Position = projection * view * model;
-	gl_Position = projection * view * vec4(FragPosition, 1.0);
+
+	gl_Position = projection * view * vec4(FragPosition  , 1.0);
 }
 
 

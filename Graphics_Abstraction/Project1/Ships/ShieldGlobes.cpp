@@ -18,8 +18,7 @@ void ShieldGlobes::Start()
 	this->currentHealth = this->maxHealth;
 
 
-	model = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply");
-	model->id = "Globe";
+	model = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply");	
 	model->transform.SetScale(glm::vec3(2.45f));
 	renderer->AddModelsAndShader(model, defaultShader);
 
@@ -36,14 +35,7 @@ void ShieldGlobes::Start()
 				//this->model->transform.position = other->model->transform.position;
 			}
 
-			if (other->model->id == "Bullet")
-			{
-				std::cout << "Globe : Bullet" << std::endl;
-				globePhyObj->collisionCallbool = false;
-				std::cout << "Current Health : " << currentHealth << std::endl;
-				//this->model->transform.position = other->model->transform.position;
-			}
-
+			
 			
 
 
@@ -89,9 +81,3 @@ void ShieldGlobes::Destroy()
 	std::cout << "Globe Destroyed" << std::endl;
 }
 
-void ShieldGlobes::AssignBullet(Bullet& bulletEntity)
-{
-	this->bullet = &bulletEntity;
-
-
-}

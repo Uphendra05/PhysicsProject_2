@@ -16,7 +16,7 @@ StarDestroyer::~StarDestroyer()
 void StarDestroyer::Start()
 {
 
-	model = new Model("Models/StarDestroyer/StarDestroyer.ply");
+	model = new Model("Models/StarDestroyer/Sample.ply");
 	model->id = "StarDestroyer";
 	model->transform.SetPosition(glm::vec3(0, 0, 0));
 	model->transform.SetScale(glm::vec3(0.045f));

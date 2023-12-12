@@ -2,7 +2,11 @@
 #include <iostream>
 #include "../../src/GraphicsRender.h"
 #include "../../src/PhysicsEngine.h"
-#include "../../Ships/Bullet.h"
+
+
+
+
+
 
 
 class ShieldGlobes
@@ -26,10 +30,10 @@ public:
 	PhysicsEngine* engine;
 	Shader* defaultShader;
 
-	void AssignBullet(Bullet& bulletEntity);
+	
 	int currentHealth;
 
-	Bullet* bullet;
+	
 	GLFWwindow* window;
 	const char* title;
 private:

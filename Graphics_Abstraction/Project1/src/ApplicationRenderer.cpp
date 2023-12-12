@@ -242,8 +242,9 @@ void ApplicationRenderer::Start()
      up = camera.transform.GetUp();
      right = camera.transform.GetRight();
 
-     globeManager = new GlobeManager(render, defaultShader, PhysicsEngine,*xWingBullet,window);
-     globeManager->Start();
+     
+
+     
 
 
 #pragma region Lights
@@ -337,6 +338,7 @@ void ApplicationRenderer::Render()
          defaultShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
          defaultShader->setFloat("time", scrollTime);
          defaultShader->setBool("isDepthBuffer", false);
+         
 
          lightShader->Bind();
          lightShader->setVec3("objectColor", glm::vec3(1, 1, 1));
@@ -384,9 +386,11 @@ void ApplicationRenderer::PostRender()
 
     PhysicsEngine.Update(deltaTime);
 
+   
+
     spaceshipEntity->Update(deltaTime);
 
-    globeManager->Update();
+    xWingBullet->SeparateUpdate();
    
     if (startXWing)
     {
@@ -579,12 +583,12 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
      }
      if (key == GLFW_KEY_4 && action == GLFW_PRESS)
      {
-         globeManager->ShieldOne->currentHealth -= globeManager->ShieldOne->bullet->damageCount;
+         xWingBullet->ShieldOne->currentHealth -= 25;
 
      }
      if (key == GLFW_KEY_5 && action == GLFW_PRESS)
      {
-         globeManager->ShieldTwo->currentHealth -= globeManager->ShieldTwo->bullet->damageCount;
+         xWingBullet->ShieldTwo->currentHealth -= 25;
 
      }
          
@@ -636,8 +640,8 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
      xWingBullet->model->transform.SetPosition(xWingEntity->model->transform.position + glm::vec3(-10,2,0));
      xWingBullet->model->isVisible = false;
      xWingBullet->bulletPhyObj->collisionCallbool = true;
-     globeManager->ShieldOne->globePhyObj->collisionCallbool = true;
-     globeManager->ShieldTwo->globePhyObj->collisionCallbool = true;
+     xWingBullet->ShieldOne->globePhyObj->collisionCallbool = true;
+     xWingBullet->ShieldTwo->globePhyObj->collisionCallbool = true;
      xWingEntity->model->isVisible = true;
      xWingEntity->isCollided = false;
      xWingBullet->isCollided = false;
