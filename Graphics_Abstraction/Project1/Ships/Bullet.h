@@ -20,12 +20,12 @@ public:
 
 	void Start();
 	void Update(float deltaTime);
-	void SeparateUpdate();
+	void SeparateUpdate(GLFWwindow* window, Shader* shader);
 	void End();
 
 	void AssignBallDecal(BallDecal& decal);
 
-	void ManageHealth(GLFWwindow* window);
+	void ManageHealth(GLFWwindow* window, Shader* shader);
 
 	Model* model;
 	GraphicsRender* renderer;
@@ -40,12 +40,17 @@ public:
 	ShieldGlobes* ShieldOne;
 	ShieldGlobes* ShieldTwo;
 
-	std::string health = "0";
+	
 
+	std::string formatHealthString(int health1, int health2) {
+		return "Shield One Health : " + std::to_string(health1) +
+			"               Shield Two Health : " + std::to_string(health2);
+	}
 	
 	float speed = 10;
 	int damageCount = 25;
 	bool isCollided;
+	bool destruct;
 
 private:
 

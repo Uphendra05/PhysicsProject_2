@@ -28,6 +28,7 @@ XWing::~XWing()
 
 void XWing::Start()
 {
+	
 	model = new Model("Models/X-Wing/X-Wing_Attack_xyz_n_uv.ply");
 	model->id = "X-Wing";
 	model->transform.SetPosition(glm::vec3(0, 21, 0));

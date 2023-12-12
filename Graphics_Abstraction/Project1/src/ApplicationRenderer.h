@@ -69,9 +69,11 @@ public:
 	void DrawDebugBvhNodeAABB(BvhNode* node);
 
 	void XWingSettings();
+	void XWingGotToShield();
 
 	int recusiveCount = 0;
 
+	bool isSixPressed;
 
 private:
 	GLFWwindow* window;
@@ -83,12 +85,14 @@ private:
 	LightManager lightManager;
 
 	Shader* defaultShader;
+	Shader* starDestroyShader;
 	Shader* lightShader;
 	Shader* StencilShader;
 	Shader* SkyboxShader;
 
 	Skybox* skybox;
-
+	float offset;
+	float explosionSpeed = 10;
 
 	Model* defaultBox;
 	Model* CityModel;

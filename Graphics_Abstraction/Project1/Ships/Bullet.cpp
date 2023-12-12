@@ -23,7 +23,7 @@ void Bullet::Start()
 	ShieldOne->model->id = "GlobeOne";
 	ShieldOne->model->meshes[0]->isWireFrame = true;
 
-	ShieldTwo->model->transform.position = glm::vec3(5, 10, 25);
+	ShieldTwo->model->transform.position = glm::vec3(6, 10, 25);
 	ShieldTwo->model->id = "GlobeTwo";
 	ShieldTwo->model->meshes[0]->isWireFrame = true;
 
@@ -69,7 +69,7 @@ void Bullet::Start()
 			if (other->model->id == "GlobeTwo")
 			{
 				std::cout << "Bullet : Collided with GlobeTwo" << std::endl;
-				ShieldOne->CalculateHealth(damageCount);
+				ShieldTwo->CalculateHealth(damageCount);
 				std::cout << "Shield Two Health:" << ShieldTwo->currentHealth << std::endl;
 				model->isVisible = false;
 				bulletPhyObj->collisionCallbool = false;
@@ -88,9 +88,9 @@ void Bullet::Update(float deltaTime)
 	
 }
 
-void Bullet::SeparateUpdate()
+void Bullet::SeparateUpdate(GLFWwindow* window, Shader* shader)
 {
-	ManageHealth();
+	ManageHealth(window, shader);
 }
 
 void Bullet::End()
@@ -102,14 +102,14 @@ void Bullet::AssignBallDecal(BallDecal& decal)
 	this->decal = &decal;
 }
 
-void Bullet::ManageHealth(GLFWwindow* window)
+void Bullet::ManageHealth(GLFWwindow* window, Shader* shader)
 {
 	std::cout << "Shield One Health:" << ShieldOne->currentHealth << std::endl;
 
 	std::cout << "Shield Two Health:" << ShieldTwo->currentHealth << std::endl;
 
 
-	glfwSetWindowTitle(window, health.c_str());
+	
 
 
 	if (ShieldOne->currentHealth <= 0)
@@ -123,11 +123,24 @@ void Bullet::ManageHealth(GLFWwindow* window)
 
 	}
 
+	int health1 = ShieldOne->currentHealth;
+	int health2 = ShieldTwo->currentHealth;
+
+
+	health1 = std::min(std::max(ShieldOne->currentHealth, 0), 100);
+	health2 = std::min(std::max(ShieldTwo->currentHealth, 0), 100);
+
+    std::string health = formatHealthString(health1, health2);
+
+	glfwSetWindowTitle(window, health.c_str());
 
 	if (ShieldOne->currentHealth <= 0 && ShieldTwo->currentHealth <= 0)
 	{
-
-		std::cout << "Initiate Star Destroyer Self Destruction" << std::endl;
+		destruct = true;
+		/*shader->setBool("isDestroyed", true);
+		shader->setFloat("explosionOffset", 10*10);*/
+		glfwSetWindowTitle(window, "Initiated Star Destroyer Self Destruction");
+		std::cout << "Initiated Star Destroyer Self Destruction" << std::endl;
 	}
 }
 

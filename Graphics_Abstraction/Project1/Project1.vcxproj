@@ -248,6 +248,8 @@
     <None Include="Shaders\Shader.vert" />
     <None Include="Shaders\SkyboxShader.frag" />
     <None Include="Shaders\SkyboxShader.vert" />
+    <None Include="Shaders\StarDestroyer.frag" />
+    <None Include="Shaders\StarDestroyer.vert" />
     <None Include="Shaders\StencilOutline.frag" />
     <None Include="Shaders\StencilOutline.vert" />
     <None Include="Source.frag" />

@@ -67,6 +67,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
   
     defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader2.frag");
+    starDestroyShader = new Shader("Shaders/StarDestroyer.vert", "Shaders/StarDestroyer.frag");
+
     lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag", SOLID);
     StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag");
    
@@ -217,7 +219,7 @@ void ApplicationRenderer::Start()
     /* spaceshipEntity = new SpaceShip(render, defaultShader, PhysicsEngine,camera);
      spaceshipEntity->LoadModel();*/
 
-     starDestroyerEntity = new StarDestroyer(render,defaultShader,PhysicsEngine);
+     starDestroyerEntity = new StarDestroyer(render, starDestroyShader,PhysicsEngine);
      starDestroyerEntity->Start();
 
      PointA = new RandomPoints(render, defaultShader);
@@ -276,8 +278,9 @@ directionLight.intensity = 0.5f;
      lightManager.AddNewLight(directionLight);
 
      lightManager.SetUniforms(defaultShader->ID);
+     lightManager.SetUniforms(starDestroyShader->ID);
    
-
+     starDestroyShader->Bind();
      defaultShader->Bind();
      defaultShader->setInt("skybox", 0);
 
@@ -315,6 +318,9 @@ void ApplicationRenderer::Render()
         glm::mat4 _view = camera.GetViewMatrix();
         glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera.GetViewMatrix()));
 
+        glm::mat4 _projection2 = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 1000.0f);
+        glm::mat4 _view2 = camera.GetViewMatrix();
+
 
         PreRender(); //Update call BEFORE  DRAW
 
@@ -339,6 +345,27 @@ void ApplicationRenderer::Render()
          defaultShader->setFloat("time", scrollTime);
          defaultShader->setBool("isDepthBuffer", false);
          
+       
+
+         starDestroyShader->Bind();
+         // material.SetMaterialProperties(*defaultShader);
+       //   lightManager.UpdateUniformValuesToShader(defaultShader);
+         lightManager.UpdateUniformValues(starDestroyShader->ID);
+
+
+         starDestroyShader->setMat4("projection", _projection2);
+         starDestroyShader->setMat4("view", _view2);
+         starDestroyShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
+         starDestroyShader->setFloat("time", scrollTime);
+         starDestroyShader->setBool("isDepthBuffer", false);
+
+         if (xWingBullet->destruct)
+         {
+             offset += deltaTime * explosionSpeed;
+             starDestroyShader->setBool("isDestroyed", true);
+             starDestroyShader->setFloat("explosionOffset", offset);
+         }
+        
 
          lightShader->Bind();
          lightShader->setVec3("objectColor", glm::vec3(1, 1, 1));
@@ -390,7 +417,7 @@ void ApplicationRenderer::PostRender()
 
     spaceshipEntity->Update(deltaTime);
 
-    xWingBullet->SeparateUpdate();
+    xWingBullet->SeparateUpdate(window,defaultShader);
    
     if (startXWing)
     {
@@ -432,8 +459,16 @@ void ApplicationRenderer::PostRender()
        
        
 
-        
-        camera.transform.SetPosition( glm::vec3(xWingEntity->model->transform.position.x,0, xWingEntity->model->transform.position.z) + glm::vec3(-25, 5, 0));
+        if (!isSixPressed)
+        {
+            camera.transform.SetPosition(glm::vec3(xWingEntity->model->transform.position.x, 0, xWingEntity->model->transform.position.z) + glm::vec3(-25, 5, 0));
+
+        }
+        else
+        {
+            camera.transform.SetPosition(glm::vec3(xWingEntity->model->transform.position.x, xWingEntity->model->transform.position.y, xWingEntity->model->transform.position.z) + glm::vec3(-25, 5, 0));
+
+        }
         
         xWingEntity->Update(deltaTime);
 
@@ -452,7 +487,7 @@ void ApplicationRenderer::PostRender()
         {
             xWingEntity->model->isVisible = false;
 
-            //camera.transform.SetOrientationFromDirections(glm::vec3(0, 1, 0), glm::vec3(0, 1, 0));
+           
 
         }
 
@@ -591,6 +626,12 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
          xWingBullet->ShieldTwo->currentHealth -= 25;
 
      }
+     if (key == GLFW_KEY_6 && action == GLFW_PRESS)
+     {
+         XWingGotToShield();
+        // xWingBullet->ShieldTwo->currentHealth -= 25;
+
+     }
          
 
          
@@ -599,6 +640,7 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
  void ApplicationRenderer::XWingSettings()
  {
      //render.ClearLineSpheres();
+     isSixPressed = false;
 
      PointA->spawnPoint->isVisible = true;
      PointB->spawnPoint->isVisible = true;
@@ -649,6 +691,59 @@ void ApplicationRenderer::DrawDebugBvhNodeAABB(BvhNode* node)
 
 
     
+ }
+
+ void ApplicationRenderer::XWingGotToShield()
+ {
+     isSixPressed = true;
+     camera.transform.SetPosition(glm::vec3(camera.transform.position.x, 10, camera.transform.position.z));
+
+     PointA->spawnPoint->isVisible = true;
+     PointB->spawnPoint->isVisible = true;
+
+     if (xWingBullet->ShieldOne->currentHealth <= 0)
+     {
+         xWingBullet->model->transform.SetPosition(xWingEntity->model->transform.position + glm::vec3(10, 2, 0));
+         PointA->spawnPoint->transform.position = glm::vec3(35, 10, 25);
+         PointB->spawnPoint->transform.position = glm::vec3(-35, 10, 25);
+     }
+     else
+     {
+         PointA->spawnPoint->transform.position = glm::vec3(-35, 10, 25);
+         PointB->spawnPoint->transform.position = glm::vec3(35, 10, 25);
+     }
+     
+
+     int noofSpheres = glm::distance(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position);
+     for (size_t i = 0; i < noofSpheres; i++)
+     {
+         float t = static_cast<float>(i) / (noofSpheres - 1);
+         glm::vec3 position = Lerp(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position, t);
+         Model* Sphere3 = new Model(*Sphere);
+         Sphere3->transform.SetPosition(position);
+         Sphere3->transform.SetScale(glm::vec3(0.1f));
+         render.AddModelsAndShader(Sphere3, lightShader);
+
+     }
+
+     xWingEntity->AssignPoint(PointA->spawnPoint->transform.position, PointB->spawnPoint->transform.position);
+     xWingEntity->model->transform.SetPosition(PointA->spawnPoint->transform.position);
+
+
+     xWingEntity->startPoint = xWingEntity->model->transform.position;
+
+     xWingEntity->shipPhyObj->collisionCallbool = true;
+
+
+     xWingBullet->model->transform.SetPosition(xWingEntity->model->transform.position + glm::vec3(-10, 2, 0));
+     xWingBullet->model->isVisible = false;
+     xWingBullet->bulletPhyObj->collisionCallbool = true;
+     xWingBullet->ShieldOne->globePhyObj->collisionCallbool = true;
+     xWingBullet->ShieldTwo->globePhyObj->collisionCallbool = true;
+     xWingEntity->model->isVisible = true;
+     xWingEntity->isCollided = false;
+     xWingBullet->isCollided = false;
+     startXWing = true;
  }
 
 
