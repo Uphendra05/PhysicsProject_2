@@ -37,32 +37,60 @@ void SpaceShip:: LoadModel()
 			glm::vec3 collisionNormal = engine->collisionNormals[0];
 			glm::vec3 velocity = SpaceShipPhysics->velocity;
 
-			// Calculate the dot product of velocity and collision normal
 			float dotProduct = glm::dot(collisionNormal, velocity);
 
-			// If the dot product is negative, it means the velocity is in the opposite direction of the collision normal
 			if (dotProduct < 0.0f)
 			{
-				// Project velocity onto collision normal to get the component in the direction of the collision normal
+				
 				glm::vec3 velocityComponent = dotProduct * collisionNormal;
 
-				// Update velocity to keep only the component in the direction of the collision normal
+			
 				SpaceShipPhysics->velocity = velocityComponent;
 
-				// Print a message indicating a collision
-				std::cout << "Spaceship collided. Velocity clamped." << std::endl;
 			}
+			if (!collisionDrawBallList.empty())
+			{
+				int size = collisionDrawBallList.size();
+
+				if (size>50)
+				{
+					// Deleting the last model of debuging green balls 
+				 render->RemoveModels(collisionDrawBallList[collisionDrawBallList.size() - 1]);
+				}
+			}
+
+			if (engine->collisionPoints.size()>0)
+			{
+				glm::vec3 collisionPoint = engine->collisionPoints[0];
+
+				Model* drawModel = new Model(*collisionBall);
+				drawModel->transform.SetPosition(collisionPoint);
+				drawModel->transform.SetScale(glm::vec3(0.2f));
+				render->AddModelsAndShader(drawModel, defaultshader);
+				collisionDrawBallList.push_back(drawModel);
+			}
+
 		});
 
 	engine->AddPhysicsObjects(SpaceShipPhysics);
 
 
+
+
+	glm::vec3 forward = model->transform.GetForward();
+
+	camera->transform.SetPosition(model->transform.position + forward * followDistance + glm::vec3(0, yoffset, 0));
+
 	glm::vec3 cameraForwad = glm::normalize(model->transform.position - camera->transform.position);
 	glm::vec3 cameraright = glm::normalize(glm::cross(glm::vec3(0, 1, 0), cameraForwad));
 	glm::vec3 cameraup = glm::normalize(glm::cross(cameraForwad, cameraright));
 
-	camera->transform.SetOrientationFromDirections(cameraup, cameraright);;
+	camera->transform.SetOrientationFromDirections(cameraup, cameraright);
+}
 
+void SpaceShip::SetCollissionPointSphere(Model* model)
+{
+	collisionBall = model;
 }
 
 void SpaceShip::Update(float deltaTime)
@@ -90,47 +118,7 @@ void SpaceShip::DrawAABBCollision(PhysicsObject* physicsObject)
 	}
 }
 
-void SpaceShip::SpaceShipInputs(GLFWwindow* window, float deltaTime)
-{
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-	{
 
-		SpaceShipPhysics->velocity = -model->transform.GetForward() *speed;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-	{
-		SpaceShipPhysics->velocity = model->transform.GetForward() * speed;
-	}
-	else   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-	{
-		SpaceShipPhysics->velocity = -model->transform.GetRight() * speed;
-	}
-	else  if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
-
-		SpaceShipPhysics->velocity = model->transform.GetRight() * speed;
-	}
-	else if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-	{
-		//Direction = model->transform.GetUp();
-		SpaceShipPhysics->velocity = model->transform.GetUp() * speed;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-	{
-		//Direction = -model->transform.GetUp();
-
-		SpaceShipPhysics->velocity = -model->transform.GetUp() * speed;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-	{
-		
-		SpaceShipPhysics->velocity = glm::vec3(0);
-		
-	}
-	
-
-	
-}
 
 void SpaceShip::OnKeyPressed(const int& key)
 {
@@ -164,8 +152,8 @@ void SpaceShip::OnKeyPressed(const int& key)
 
 	else if (key == GLFW_KEY_LEFT)  //LEFT
 	{
-		model->transform.SetRotation(glm::vec3(model->transform.rotation.x, 
-			model->transform.rotation.y + rotationAngle,
+		model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
+			model->transform.rotation.y +rotationAngle,
 			model->transform.rotation.z));
 
 	}

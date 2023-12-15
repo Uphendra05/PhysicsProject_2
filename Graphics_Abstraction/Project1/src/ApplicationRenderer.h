@@ -79,6 +79,7 @@ private:
 
 
 	Model* defaultBox;
+	Model* defaultSphere;
 	Model* CityModel;
 
 	LoadModelsExternal m_loadModels;

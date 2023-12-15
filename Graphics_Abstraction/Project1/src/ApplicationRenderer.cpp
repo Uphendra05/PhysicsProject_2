@@ -173,16 +173,16 @@ void ApplicationRenderer::Start()
 
     render.SetLightShader(lightShader);
 
-    Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
+    defaultSphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
 
 
     //render.AddModelsAndShader(CamPlaceholder, defaultShader);
-     Sphere->transform.position.x += 2;
+     defaultSphere->transform.position.x += 2;
 
     
 
 
-     Model* directionLightModel = new Model(*Sphere);
+     Model* directionLightModel = new Model(*defaultSphere);
      directionLightModel->transform.SetPosition(glm::vec3(1.0f, 3.0f, 0.0f));
      directionLightModel->transform.SetRotation(glm::vec3(-60, 0, 0));
      directionLightModel->transform.SetScale(glm::vec3(0.1f));
@@ -215,6 +215,7 @@ void ApplicationRenderer::Start()
      //////SPACE SHIP ENTITY
      spaceshipEntity = new SpaceShip(render, defaultShader, PhysicsEngine,camera);
      spaceshipEntity->LoadModel();
+     spaceshipEntity->SetCollissionPointSphere(defaultSphere);
 
 
 #pragma region Lights

@@ -63,7 +63,7 @@ public:
 	std::vector<Model*> GetModelList();
 
 	void DrawAABB(const modelAABB& aabb);
-	
+	void RemoveModels(Model* model);
 	
 	void Draw();
 

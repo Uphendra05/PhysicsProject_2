@@ -1,3 +1,51 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Graphics.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  glad.c
+  InputManager.cpp
+  SpaceShip.cpp
+C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\Project1\src\SpaceShip.cpp(53,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  PhysicsCollisionTypes.cpp
+  BvhNode.cpp
+  BvhTree.cpp
+  BvhNode.h
+  CameraMovement.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_glfw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  LoadModelsExternal.cpp
+  Skybox.cpp
+  Application.cpp
+  ApplicationRenderer.cpp
+  GraphicsRender.cpp
+  IndexBuffer.cpp
+  Generating Code...
+C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\Project1\src\PhysicsCollisionTypes.h(43): warning C4172: returning address of local variable or temporary: mAABB
+  Compiling...
+  Light.cpp
+  LightManager.cpp
+  Main.cpp
+  material.cpp
+  mesh.cpp
+C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\Project1\src\mesh.cpp(216,23): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\Project1\src\mesh.cpp(226,58): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+  PhysicsEngine.cpp
+  PhysicsObject.cpp
+  Shader.cpp
   Camera.cpp
+  model.cpp
+  Renderer.cpp
+  Textures.cpp
+  Transform.cpp
+  VertexArray.cpp
+C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\Project1\src\VertexArray.cpp(27,4): warning C4312: 'type cast': conversion from 'unsigned int' to 'const void *' of greater size
+  VertexBuffer.cpp
+  Generating Code...
+C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\Project1\src\model.cpp(357): warning C4715: 'Model::LoadMaterialTexture': not all control paths return a value
+C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\Project1\src\PhysicsCollisionTypes.h(274): warning C4172: returning address of local variable or temporary: q
+C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\Project1\src\material.cpp(80): warning C4715: 'Material::GetAmbientColor': not all control paths return a value
+x64\Debug\BvhNode.obj : warning LNK4042: object specified more than once; extras ignored
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Project1.vcxproj -> C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\x64\Debug\Physics_Project.exe

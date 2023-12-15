@@ -14,17 +14,17 @@ public:
 	PhysicsObject* SpaceShipPhysics;
 
 	void LoadModel();
+	void SetCollissionPointSphere(Model* model);
 
 	void Update(float deltaTime);
 	void DrawAABBCollision(PhysicsObject* physicsObject);
-	void SpaceShipInputs(GLFWwindow* window, float deltaTime);
 
 private:
 	GraphicsRender* render;
 	Shader* defaultshader;
 	PhysicsEngine* engine;
 	Camera* camera;
-
+	Model* collisionBall =nullptr;
 	glm::vec3 Direction = glm::vec3(0, 0, 0);
 
 	float yoffset=2 ;
@@ -33,6 +33,8 @@ private:
 	float rotationAngle = 10;
 
 	bool isDebugAAABDraw;
+
+	std::vector<Model*> collisionDrawBallList;
 
 	void OnKeyPressed(const int& key) override;
 	void OnKeyReleased(const int& key) override;
