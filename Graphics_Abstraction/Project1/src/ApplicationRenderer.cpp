@@ -305,7 +305,7 @@ void ApplicationRenderer::Render()
 
          defaultShader->setMat4("projection", _projection);
          defaultShader->setMat4("view", _view);
-         defaultShader->setVec3("viewPos", camera.Position.x, camera.Position.y, camera.Position.z);
+         defaultShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
          defaultShader->setFloat("time", scrollTime);
          defaultShader->setBool("isDepthBuffer", false);
 

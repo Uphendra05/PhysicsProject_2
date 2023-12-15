@@ -1,3 +1,3 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Graphics.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  ApplicationRenderer.cpp
-  Project1.vcxproj -> E:\Network Project\GitRepo\PhysicsProject_2\Graphics_Abstraction\x64\Debug\Physics_Project.exe
+  Camera.cpp
+  Project1.vcxproj -> C:\__Ibu\Fanshawe College\Classes Materials\Physics and simulations\Project 2\PhysicsProject_2\Graphics_Abstraction\x64\Debug\Physics_Project.exe

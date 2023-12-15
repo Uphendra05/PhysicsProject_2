@@ -57,6 +57,11 @@ void SpaceShip:: LoadModel()
 	engine->AddPhysicsObjects(SpaceShipPhysics);
 
 
+	glm::vec3 cameraForwad = glm::normalize(model->transform.position - camera->transform.position);
+	glm::vec3 cameraright = glm::normalize(glm::cross(glm::vec3(0, 1, 0), cameraForwad));
+	glm::vec3 cameraup = glm::normalize(glm::cross(cameraForwad, cameraright));
+
+	camera->transform.SetOrientationFromDirections(cameraup, cameraright);;
 
 }
 
@@ -64,7 +69,9 @@ void SpaceShip::Update(float deltaTime)
 {
 
 	glm::vec3 forward = model->transform.GetForward();
-	camera->SetCameraPosition(model->transform.position + forward  *followDistance + glm::vec3(0, yoffset, 0));
+	//camera->SetCameraPosition(model->transform.position + forward  *followDistance + glm::vec3(0, yoffset, 0));
+	camera->transform.SetPosition(model->transform.position + forward * followDistance + glm::vec3(0, yoffset, 0));
+	
 	DrawAABBCollision(SpaceShipPhysics);
 }
 
@@ -185,8 +192,13 @@ void SpaceShip::OnKeyPressed(const int& key)
 
 	}
 
-	camera->SetCameraPosition(model->transform.position + model->transform.GetForward() * followDistance + glm::vec3(0, yoffset, 0));
+	//camera->SetCameraPosition(model->transform.position + model->transform.GetForward() * followDistance + glm::vec3(0, yoffset, 0));
 
+	glm::vec3 cameraForwad = glm ::normalize(model->transform.position - camera->transform.position);
+	glm::vec3 cameraright = glm::normalize(glm::cross(glm::vec3(0, 1, 0), cameraForwad));
+	glm::vec3 cameraup = glm::normalize(glm::cross(cameraForwad, cameraright));
+
+	camera->transform.SetOrientationFromDirections(cameraup, cameraright);
     if (key == GLFW_KEY_0)
 	{
 		isDebugAAABDraw = !isDebugAAABDraw;
