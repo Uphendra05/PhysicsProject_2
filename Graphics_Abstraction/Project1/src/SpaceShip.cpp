@@ -20,10 +20,10 @@ SpaceShip::~SpaceShip()
 
 void SpaceShip:: LoadModel()
 {
-	model = new Model("Models/Spaceship/Ship2.obj");
+	model = new Model("Models/Spaceship/ss.obj");
 	model->id = "SpaceShip";
 	model->transform.SetPosition(glm::vec3(0, 5, 2));
-	model->transform.SetScale(glm::vec3(0.5f));
+	model->transform.SetScale(glm::vec3(1.0f));
 	render->AddModelsAndShader(model, defaultshader);
 
 
@@ -122,6 +122,9 @@ void SpaceShip::DrawAABBCollision(PhysicsObject* physicsObject)
 
 void SpaceShip::OnKeyPressed(const int& key)
 {
+	glm::vec3 cameraForwad = glm::normalize(model->transform.position - camera->transform.position);
+	glm::vec3 cameraright = glm::normalize(glm::cross(glm::vec3(0, 1, 0), cameraForwad));
+	glm::vec3 cameraup = glm::normalize(glm::cross(cameraForwad, cameraright));
 	if (key == GLFW_KEY_W)
 	{
 		SpaceShipPhysics->velocity = -model->transform.GetForward() * speed;
@@ -155,7 +158,7 @@ void SpaceShip::OnKeyPressed(const int& key)
 		model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
 			model->transform.rotation.y +rotationAngle,
 			model->transform.rotation.z));
-
+		camera->transform.SetOrientationFromDirections(cameraup, cameraright);
 	}
 
 	else if (key == GLFW_KEY_RIGHT) //RIGHT
@@ -163,30 +166,44 @@ void SpaceShip::OnKeyPressed(const int& key)
 		model->transform.SetRotation(glm::vec3(model->transform.rotation.x,
 			model->transform.rotation.y - rotationAngle,
 			model->transform.rotation.z));
-
+		camera->transform.SetOrientationFromDirections(cameraup, cameraright);
 	}
-	else if (key == GLFW_KEY_UP) //UP
+	else if (key == GLFW_KEY_X) //UP
 	{
 		model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
 			model->transform.rotation.y,
 			model->transform.rotation.z - rotationAngle));
-
+		camera->transform.SetOrientationFromDirections(cameraup, cameraright);
 	}
-	else if (key == GLFW_KEY_DOWN) //DOWN
+	else if (key == GLFW_KEY_Z) //DOWN
 	{
 		model->transform.SetRotation(glm::vec3(model->transform.rotation.x ,
 			model->transform.rotation.y,
 			model->transform.rotation.z + rotationAngle));
+		camera->transform.SetOrientationFromDirections(cameraup, cameraright);
+	}
 
+	else if (key == GLFW_KEY_DOWN)  //LEFT
+	{
+		model->transform.SetRotation(glm::vec3(model->transform.rotation.x + rotationAngle,
+			model->transform.rotation.y ,
+			model->transform.rotation.z));
+		camera->transform.SetOrientationFromDirections(cameraup, cameraright);
+	}
+
+	else if (key == GLFW_KEY_UP) //RIGHT
+	{
+		model->transform.SetRotation(glm::vec3(model->transform.rotation.x - rotationAngle,
+			model->transform.rotation.y ,
+			model->transform.rotation.z));
+		camera->transform.SetOrientationFromDirections(cameraup, cameraright);
 	}
 
 	//camera->SetCameraPosition(model->transform.position + model->transform.GetForward() * followDistance + glm::vec3(0, yoffset, 0));
 
-	glm::vec3 cameraForwad = glm ::normalize(model->transform.position - camera->transform.position);
-	glm::vec3 cameraright = glm::normalize(glm::cross(glm::vec3(0, 1, 0), cameraForwad));
-	glm::vec3 cameraup = glm::normalize(glm::cross(cameraForwad, cameraright));
+	
 
-	camera->transform.SetOrientationFromDirections(cameraup, cameraright);
+	
     if (key == GLFW_KEY_0)
 	{
 		isDebugAAABDraw = !isDebugAAABDraw;
