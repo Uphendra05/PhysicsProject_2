@@ -193,10 +193,10 @@ void ApplicationRenderer::Start()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
      modelData = loadModelDataFromFile("Model.txt");
-     CityModel = new Model("Models/White//White.obj",false);
-     CityModel->transform.SetPosition(glm::vec3(0,-15,0));
-     CityModel->transform.SetRotation(glm::vec3(0,0,0));
-     CityModel->transform.SetScale(glm::vec3(0.1f));
+     CityModel = new Model("Models/City/City.obj");
+     CityModel->transform.SetPosition(glm::vec3(0, -5, 0));
+     CityModel->transform.SetRotation(glm::vec3(0, 0, 0));
+     CityModel->transform.SetScale(glm::vec3(1));
      render.AddModelsAndShader(CityModel, defaultShader);
 
      cityPhysics = new PhysicsObject(CityModel);
