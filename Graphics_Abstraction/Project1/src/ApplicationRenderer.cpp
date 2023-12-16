@@ -294,7 +294,7 @@ void ApplicationRenderer::Render()
         SkyboxShader->setMat4("view", _skyboxview);
         SkyboxShader->setMat4("projection", _projection);
 
-       // skybox->Skyboxrender();
+        skybox->Skyboxrender();
         glDepthFunc(GL_LESS); 
 
 
